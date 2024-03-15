@@ -3,6 +3,7 @@ using System;
 using Licenta.Server.DataLayer.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Licenta.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240302122205_v4")]
+    partial class v4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,9 +90,6 @@ namespace Licenta.Server.Migrations
                     b.Property<Guid>("ReporterId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("SprintId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text");
@@ -105,8 +105,6 @@ namespace Licenta.Server.Migrations
                     b.HasIndex("ProjectId");
 
                     b.HasIndex("ReporterId");
-
-                    b.HasIndex("SprintId");
 
                     b.ToTable("Issues");
                 });
@@ -503,7 +501,7 @@ namespace Licenta.Server.Migrations
                         .IsRequired();
 
                     b.HasOne("Licenta.Server.DataLayer.Models.Project", "Project")
-                        .WithMany("Issues")
+                        .WithMany()
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -511,12 +509,6 @@ namespace Licenta.Server.Migrations
                     b.HasOne("Licenta.Server.DataLayer.Models.User", "Reporter")
                         .WithMany()
                         .HasForeignKey("ReporterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Licenta.Server.DataLayer.Models.Sprint", "Sprint")
-                        .WithMany("Issues")
-                        .HasForeignKey("SprintId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -529,8 +521,6 @@ namespace Licenta.Server.Migrations
                     b.Navigation("Project");
 
                     b.Navigation("Reporter");
-
-                    b.Navigation("Sprint");
                 });
 
             modelBuilder.Entity("Licenta.Server.DataLayer.Models.Project", b =>
@@ -628,14 +618,7 @@ namespace Licenta.Server.Migrations
 
             modelBuilder.Entity("Licenta.Server.DataLayer.Models.Project", b =>
                 {
-                    b.Navigation("Issues");
-
                     b.Navigation("Sprints");
-                });
-
-            modelBuilder.Entity("Licenta.Server.DataLayer.Models.Sprint", b =>
-                {
-                    b.Navigation("Issues");
                 });
 
             modelBuilder.Entity("Licenta.Server.DataLayer.Models.User", b =>

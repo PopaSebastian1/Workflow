@@ -3,6 +3,7 @@ using System;
 using Licenta.Server.DataLayer.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Licenta.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240213143353_v2")]
+    partial class v2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,137 +24,6 @@ namespace Licenta.Server.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("Licenta.Server.DataLayer.Models.Comment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("IssueId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IssueId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("Licenta.Server.DataLayer.Models.Issue", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("AssigneeId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("DueDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<float>("EstimatedTime")
-                        .HasColumnType("real");
-
-                    b.Property<int>("IssueStatusId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("IssueTypeId")
-                        .HasColumnType("integer");
-
-                    b.Property<float>("LoggedTime")
-                        .HasColumnType("real");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ReporterId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("SprintId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AssigneeId");
-
-                    b.HasIndex("IssueStatusId");
-
-                    b.HasIndex("IssueTypeId");
-
-                    b.HasIndex("ProjectId");
-
-                    b.HasIndex("ReporterId");
-
-                    b.HasIndex("SprintId");
-
-                    b.ToTable("Issues");
-                });
-
-            modelBuilder.Entity("Licenta.Server.DataLayer.Models.IssueStatus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("IconUrl")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("IssuesStatus");
-                });
-
-            modelBuilder.Entity("Licenta.Server.DataLayer.Models.IssueType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("IconUrl")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("IssueTypes");
-                });
 
             modelBuilder.Entity("Licenta.Server.DataLayer.Models.Project", b =>
                 {
@@ -467,72 +339,6 @@ namespace Licenta.Server.Migrations
                     b.ToTable("UserProjects", (string)null);
                 });
 
-            modelBuilder.Entity("Licenta.Server.DataLayer.Models.Comment", b =>
-                {
-                    b.HasOne("Licenta.Server.DataLayer.Models.Issue", null)
-                        .WithMany("Comments")
-                        .HasForeignKey("IssueId");
-
-                    b.HasOne("Licenta.Server.DataLayer.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Licenta.Server.DataLayer.Models.Issue", b =>
-                {
-                    b.HasOne("Licenta.Server.DataLayer.Models.User", "Assignee")
-                        .WithMany("Issues")
-                        .HasForeignKey("AssigneeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Licenta.Server.DataLayer.Models.IssueStatus", "IssueStatus")
-                        .WithMany()
-                        .HasForeignKey("IssueStatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Licenta.Server.DataLayer.Models.IssueType", "IssueType")
-                        .WithMany()
-                        .HasForeignKey("IssueTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Licenta.Server.DataLayer.Models.Project", "Project")
-                        .WithMany("Issues")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Licenta.Server.DataLayer.Models.User", "Reporter")
-                        .WithMany()
-                        .HasForeignKey("ReporterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Licenta.Server.DataLayer.Models.Sprint", "Sprint")
-                        .WithMany("Issues")
-                        .HasForeignKey("SprintId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Assignee");
-
-                    b.Navigation("IssueStatus");
-
-                    b.Navigation("IssueType");
-
-                    b.Navigation("Project");
-
-                    b.Navigation("Reporter");
-
-                    b.Navigation("Sprint");
-                });
-
             modelBuilder.Entity("Licenta.Server.DataLayer.Models.Project", b =>
                 {
                     b.HasOne("Licenta.Server.DataLayer.Models.User", "Owner")
@@ -621,26 +427,9 @@ namespace Licenta.Server.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Licenta.Server.DataLayer.Models.Issue", b =>
-                {
-                    b.Navigation("Comments");
-                });
-
             modelBuilder.Entity("Licenta.Server.DataLayer.Models.Project", b =>
                 {
-                    b.Navigation("Issues");
-
                     b.Navigation("Sprints");
-                });
-
-            modelBuilder.Entity("Licenta.Server.DataLayer.Models.Sprint", b =>
-                {
-                    b.Navigation("Issues");
-                });
-
-            modelBuilder.Entity("Licenta.Server.DataLayer.Models.User", b =>
-                {
-                    b.Navigation("Issues");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,5 +1,8 @@
 using Licenta.Server.DataLayer.Models;
+using Licenta.Server.EmailSender;
 using Licenta.Server.Settings;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +13,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 Dependencies.Inject(builder);
 var app = builder.Build();
 app.MapIdentityApi<User>();
