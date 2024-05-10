@@ -35,8 +35,6 @@ Our Project Management Tool for IT Projects is built using the following technol
 - **Database:** 
   <img src="https://www.vectorlogo.zone/logos/postgresql/postgresql-icon.svg" alt="postgresql" width="20" height="20"/> PostgreSQL for storing project data.
 
-  <img src="https://jwt.io/img/pic_logo.svg" alt="jwt" width="20" height="20"/> JWT for user authentication and authorization.
-
 ## Contributing
 We welcome contributions from the community to enhance and improve our Project Management Tool for IT Projects. If you have any ideas, bug fixes, or feature suggestions, please feel free to open an issue or submit a pull request. We appreciate your contributions and feedback!
 
