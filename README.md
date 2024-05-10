@@ -33,8 +33,8 @@ Our Project Management Tool for IT Projects is built using the following technol
   <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/csharp/csharp-original.svg" alt="csharp" width="20" height="20"/> C# with 
   <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/dot-net/dot-net-original.svg" alt="dotnet" width="20" height="20"/> ASP.NET for server-side logic.
 - **Database:** 
-  <img src="https://www.vectorlogo.zone/logos/mongodb/mongodb-icon.svg" alt="mongodb" width="20" height="20"/> MongoDB for storing project data.
-- **Authentication:** 
+  <img src="https://www.vectorlogo.zone/logos/postgresql/postgresql-icon.svg" alt="postgresql" width="20" height="20"/> PostgreSQL for storing project data.
+
   <img src="https://jwt.io/img/pic_logo.svg" alt="jwt" width="20" height="20"/> JWT for user authentication and authorization.
 
 ## Contributing
