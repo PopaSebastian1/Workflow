@@ -21,7 +21,6 @@ To get started with our Project Management Tool for IT Projects, follow these st
 Here's how you can leverage our Project Management Tool for IT Projects effectively:
 - **Task Management:** Create tasks, assign them to team members, set deadlines, and track progress.
 - **Resource Tracking:** Monitor resource utilization, including human resources, equipment, and budget allocation.
-- **Collaboration:** Communicate with team members, share updates, and collaborate on tasks and projects within the platform.
 
 ## Technologies
 Our Project Management Tool for IT Projects is built using the following technologies:
