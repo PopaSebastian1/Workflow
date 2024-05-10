@@ -9,8 +9,7 @@ Our Project Management Tool for IT Projects offers a range of features to suppor
 - **Resource Tracking:** Monitor resource allocation and utilization to ensure optimal project workflow. Identify potential bottlenecks and allocate resources effectively to meet project deadlines.
 - **User-Friendly Interface:** Our intuitive user interface is designed for ease of use, allowing you to navigate through project tasks and resources effortlessly.
 - **Collaboration:** Foster collaboration among team members by facilitating communication and task assignment within the platform. Keep everyone informed and engaged throughout the project lifecycle.
-- **Customization:** Tailor the tool to fit your project's unique requirements with customizable features and settings. Adapt the tool to your workflow and preferences to maximize productivity.
-
+  
 ## Getting Started
 To get started with our Project Management Tool for IT Projects, follow these steps:
 1. Clone the repository to your local machine.
@@ -34,12 +33,3 @@ Our Project Management Tool for IT Projects is built using the following technol
   <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/dot-net/dot-net-original.svg" alt="dotnet" width="20" height="20"/> ASP.NET for server-side logic.
 - **Database:** 
   <img src="https://www.vectorlogo.zone/logos/postgresql/postgresql-icon.svg" alt="postgresql" width="20" height="20"/> PostgreSQL for storing project data.
-
-## Contributing
-We welcome contributions from the community to enhance and improve our Project Management Tool for IT Projects. If you have any ideas, bug fixes, or feature suggestions, please feel free to open an issue or submit a pull request. We appreciate your contributions and feedback!
-
-## License
-This project is licensed under the [MIT License](LICENSE).
-
-## Contact
-For any inquiries or feedback, please contact [your-email@example.com](mailto:your-email@example.com). We'd love to hear from you and assist you with any questions you may have.
