@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
+using JsonIgnoreAttribute = System.Text.Json.Serialization.JsonIgnoreAttribute;
 
 namespace Licenta.Server.DataLayer.Models
 {
@@ -36,18 +39,20 @@ namespace Licenta.Server.DataLayer.Models
         [ForeignKey("ParentIssue")]
         public Guid? ParentIssueId { get; set; }
         // Navigation properties
+        [JsonIgnore]
         public List<Comment> Comments { get; set; }
+        [JsonIgnore]
         public Project Project { get; set; }
         public Sprint Sprint { get; set; }
         public IssueStatus IssueStatus { get; set; }
         public IssueType IssueType { get; set; }
         public User Assignee { get; set; }
         public User Reporter { get; set; }
-
         // Proprietăți pentru relația de ierarhie
+        [JsonIgnore]
         public Issue ParentIssue { get; set; }
-
         // Lista de probleme copil
+        //[JsonIgnore]
         public List<Issue> ChildIssues { get; set; }
 
         // Cheia externă pentru relația de unu-la-multe cu problema părinte

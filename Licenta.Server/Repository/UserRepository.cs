@@ -10,7 +10,7 @@ namespace Licenta.Server.Repository;
 public class UserRepository
 {
     private readonly AppDbContext _context;
-    public UserRepository(AppDbContext context) 
+    public UserRepository(AppDbContext context)
     {
         _context = context;
     }
@@ -27,7 +27,7 @@ public class UserRepository
             LastName = u.LastName,
             Role = u.Role,
             ProfilePicture = u.ProfilePicture,
-            
+
 
         }).ToList();
     }
@@ -53,9 +53,9 @@ public class UserRepository
     }
     public async Task<User?> GetUserAsync(string email)
     {
-        return await _context.Users.Where(user=>user.Email==email).FirstOrDefaultAsync();
+        return await _context.Users.Where(user => user.Email == email).FirstOrDefaultAsync();
     }
-    public async Task<User?>UpdateUser(string email, string firstName, string lastName)
+    public async Task<User?> UpdateUser(string email, string firstName, string lastName)
     {
         var user = await _context.Users.Where(user => user.Email == email).FirstOrDefaultAsync();
         if (user == null)
@@ -67,7 +67,7 @@ public class UserRepository
         //user.ProfilePicture = profilePicture;
         return user;
     }
-    public async Task<List<Project>>GetAllUserProjects(string email)
+    public async Task<List<Project>> GetAllUserProjects(string email)
     {
         var user = await _context.Users.Where(user => user.Email == email).FirstOrDefaultAsync();
         if (user == null)
@@ -75,5 +75,21 @@ public class UserRepository
             throw new ArgumentNullException(nameof(user));
         }
         return await _context.Projects.Where(p => p.Owner.Email == email).ToListAsync();
+    }
+    public async Task<Project?> JoinProject(string email, string projectKey)
+    {
+        var user = await _context.Users.Where(user => user.Email == email).FirstOrDefaultAsync();
+        if (user == null)
+        {
+            throw new ArgumentNullException(nameof(user));
+        }
+        var project = await _context.Projects.Where(p => p.Key == projectKey).FirstOrDefaultAsync();
+        if (project == null)
+        {
+            throw new ArgumentNullException(nameof(project));
+        }
+        project.Members.Add(user);
+        _context.SaveChanges();
+        return project;
     }
 }

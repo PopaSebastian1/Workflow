@@ -1,0 +1,99 @@
+Sidenav
+<div class="sidenav">
+    <div class="profile">
+        <img src="{{user?.profilePicture}}" alt="" width="200" height="200">
+
+        <div class="name">
+            {{user?.fullName}}
+        </div>
+        <div class="job">
+            {{getRoleString(user?.role)}}
+        </div>
+    </div>
+
+</div>
+
+<div class="main">
+    <h2>IDENTITY</h2>
+    <div class="card">
+        <div class="card-body">
+            <i class="fa fa-pen fa-xs edit"></i>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>First Name</td>
+                        <td>:</td>
+                        <td>{{user?.firstName}}</td>
+                    </tr>
+                    <tr>
+                        <td>Last Name</td>
+                        <td>:</td>
+                        <td>{{user?.lastName}}</td>
+                    </tr>
+                    <tr>
+                        <td>Full Name</td>
+                        <td>:</td>
+                        <td>{{user?.fullName}}</td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td>:</td>
+                        <td>{{user?.email}}</td>
+                    </tr>
+                    <tr>
+                        <td>Role</td>
+                        <td>:</td>
+                        <td>{{getRoleString(user?.role)}}</td>
+                    </tr>
+                    <tr>
+                        <td>Skill </td>
+                        <td>:</td>
+                        <td>
+                            <div *ngFor="let skill of user?.skills">
+                                {{skill.name}}
+                              </div>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <h2>SOCIAL MEDIA</h2>
+    <div class="card">
+        <div class="card-body">
+            <i class="fa fa-pen fa-xs edit"></i>
+            <div class="social-media">
+                <span class="fa-stack fa-sm">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="fa-stack fa-sm">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="fa-stack fa-sm">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-instagram fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="fa-stack fa-sm">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-invision fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="fa-stack fa-sm">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="fa-stack fa-sm">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-whatsapp fa-stack-1x fa-inverse"></i>
+                </span>
+                <span class="fa-stack fa-sm">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-snapchat fa-stack-1x fa-inverse"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

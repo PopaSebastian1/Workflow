@@ -36,6 +36,10 @@ namespace Licenta.Server.Controllers
         {
             return Ok(await _userService.UpdateUserAsync(email, firstName, lastName));
         }
-        
+        [HttpPost("JoinProject")]
+        public async Task<IActionResult> JoinProject(string email, string key)
+        {
+            return Ok(await _userService.JoinProject(email, key));
+        }
     }
 }

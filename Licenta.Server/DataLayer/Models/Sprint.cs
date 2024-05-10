@@ -11,7 +11,6 @@ namespace Licenta.Server.DataLayer.Models
         public string Name { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        [ForeignKey("Projeects")]
         public Guid ProjectId { get; set; }
         public virtual Project Project { get; set; }
         public List<Issue> Issues { get; set; }

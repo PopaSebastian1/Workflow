@@ -1,0 +1,52 @@
+
+
+<div class="card-grid">
+    <div class="card" *ngFor="let project of userProjects | async" (click)="setSelectedProject(project)">
+        <div class="card-header">
+            {{ project.name }}
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">{{ project.name }}</h2>
+            <p>{{ project.description }}</p>
+        </div>
+        <div class="card-footer">
+            <p class="card-footer-text">
+                Created on: {{ project.startDate | date : "MMMM yyyy" }}
+            </p>
+            <button class="card-button" (click)="goToProject(project)">Go to project</button>
+        </div>
+    </div>
+</div>
+  <div class="floating-button">
+    <button class="main-button">
+      <i class="fas fa-bars fa-xl" style="color: white"></i>
+    </button>
+    <div class="button-group">
+        <button class="sub-button" title="All projects">
+            <i class="fas fa-globe fa-xl" style="color: white"></i>
+        </button>
+        <button class="sub-button" title="Projects you own">
+            <i class="fas fa-user fa-xl" style="color: white"></i>
+        </button>
+        <button class="sub-button" title="Projects you are part of">
+            <i class="fas fa-users fa-xl" style="color: white"></i>
+        </button>
+        <button class="sub-button" title="Delete/Leave Project">
+            <i class="fas fa-trash-alt fa xl" style="color: white" (click)="removeProject()"></i>
+        </button>
+        <button class="sub-button" title="Create Project" (click)="toggleCreateProject()">
+          <i class="fas fa-plus fa-xl" style="color: white"></i>
+        </button>
+        <button class="sub-button" title="Join Project" (click)="toggleJoinProject()">
+            <i class="fas fa-handshake fa-xl" style="color: white"></i>
+        </button>
+    </div>
+  </div>
+  <app-create-project
+  *ngIf="showCreateProject"
+  (closeModalEvent)="closeCreateProject()"
+  ></app-create-project>
+  <app-join-project
+  *ngIf="showJoinProject"
+  (closeModalEvent)="closejoinProject()">
+</app-join-project>

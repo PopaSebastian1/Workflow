@@ -12,9 +12,12 @@ namespace Licenta.Server.DataLayer.Models
         [JsonIgnore]
         [NotMapped]
         public List<Skill>? Skills { get; set; }
-
+        [JsonIgnore]
         public List<Project> Projects { get; set; }
+        [JsonIgnore]
         public List<Issue> Issues { get; set; }
+        [JsonIgnore]
+        public List<Project> AdministratorProjects { get; set; }
         public string? ProfilePicture { get; set; }
 
         //create fullName property for the user that comes from firstName and lastName

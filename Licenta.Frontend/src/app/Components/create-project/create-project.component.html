@@ -1,0 +1,28 @@
+<div class="modal-background" (click)="closeModal()"></div>
+<div class="modal-content">
+  <div class="modal-header">
+    <h2>{{ title }}</h2>
+    <button class="close-button" (click)="closeModal()">&times;</button>
+  </div>
+  <div class="modal-body">
+    <!-- Aici puteți adăuga conținutul dorit pentru fereastra modală -->
+    <!-- De exemplu, un formular pentru adăugarea de proiecte -->
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="projectName">Project Name</label>
+        <input type="text" id="projectName" name="projectName" [(ngModel)]="projectName" required>
+      </div>
+      <div class="form-group">
+        <label for="projectDescription">Project Description</label>
+        <textarea id="projectDescription" name="projectDescription" [(ngModel)]="projectDescription" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="projectDueDate">Due Date</label>
+        <input type="date" id="projectDueDate" name="projectDueDate" [(ngModel)]="projectDueDate" required>
+      </div>
+      <div class="form-group-button">
+        <button type="submit">Add Project</button>
+      </div>
+    </form>
+  </div>
+</div>

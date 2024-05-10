@@ -1,4 +1,5 @@
-﻿using Licenta.Server.DataLayer.Models;
+﻿using Licenta.Server.DataLayer.Dto;
+using Licenta.Server.DataLayer.Models;
 using Licenta.Server.DataLayer.Utils;
 using Microsoft.EntityFrameworkCore;
 
@@ -39,9 +40,19 @@ namespace Licenta.Server.Repository
             }
             return await _context.Sprints.Where(p=> p.ProjectId == projectId).ToListAsync();
         }
-        public async Task<Sprint> AddSprint(Sprint sprint)
+        public async Task<Sprint> AddSprint(AddSprintDto addSprint)
         {
-            var result = await _context.Sprints.AddAsync(sprint);
+            Sprint sprint = new Sprint
+            {
+                Id = Guid.NewGuid(),
+                Name = addSprint.Name,
+                StartDate = addSprint.StartDate,
+                EndDate = addSprint.EndDate,
+                ProjectId = addSprint.ProjectId,
+                Project = await _context.Projects.Where(p => p.ProjectId == addSprint.ProjectId).FirstOrDefaultAsync(),
+                Issues = new List<Issue>()
+            };
+            var result= _context.Sprints.Add(sprint);
             await _context.SaveChangesAsync();
             return result.Entity;
         }

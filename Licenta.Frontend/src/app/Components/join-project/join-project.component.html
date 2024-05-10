@@ -1,0 +1,18 @@
+<div class="modal-background" (click)="onDialogClose()"></div>
+<div class="modal-content">
+  <div class="modal-header">
+    <h2>Join Project</h2>
+    <button class="close-button" (click)="onDialogClose()">&times;</button>
+  </div>
+  <div class="modal-body">
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="projectCode">Enter Project Code</label>
+        <input type="text" id="projectCode" name="projectCode" [(ngModel)]="projectCode" required>
+      </div>
+      <div class="form-group-button">
+        <button type="submit" (click)="onSubmit()">Join Project</button>
+      </div>
+    </form>
+  </div>
+</div>

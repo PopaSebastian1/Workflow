@@ -1,0 +1,158 @@
+<div class="page">
+  <div *ngIf="editedIssue" class="issue-details container">
+    <div class="issue-header row">
+      <div class="col-md-6">
+        <h2>{{ editedIssue.title }}</h2>
+      </div>
+      <div class="issue-dropdowns col-md-6 justify-content-end">
+        <mat-form-field appearance="fill">
+          <mat-label>Status</mat-label>
+          <mat-select [(ngModel)]="editedIssue.issueStatus.name">
+            <mat-option value="To Do">To Do</mat-option>
+            <mat-option value="In Progress">In Progress</mat-option>
+            <mat-option value="Done">Done</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Type</mat-label>
+          <mat-select [(ngModel)]="editedIssue.issueType.name">
+            <mat-option value="Task">Task</mat-option>
+            <mat-option value="Story">Story</mat-option>
+            <mat-option value="Epic">Epic</mat-option>
+            <mat-option value="Bug">Bug</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="issue-content row">
+      <div class="left-section col-md-6">
+        <div class="issue-field">
+          <div class="description-field">
+            <div class="mat-label-wrapper">
+              <mat-label>Description</mat-label>
+            </div>
+            <textarea matInput [(ngModel)]="editedIssue.description"></textarea>
+          </div>
+        </div>
+        <div class="issue-field">
+          <div class="mat-label-wrapper">
+            <mat-label>Created At</mat-label>
+          </div>
+          <input
+            matInput
+            type="date"
+            [value]="formattedCreatedAt"
+            readonly
+            disabled
+          />
+        </div>
+        <div class="issue-field">
+          <div class="mat-label-wrapper">
+            <mat-label>Due Date</mat-label>
+          </div>
+          <input
+            matInput
+            type="date"
+            [value]="formattedDueDate"
+            readonly
+            disabled
+          />
+        </div>
+        <div class="issue-field" *ngIf="editedIssue.sprint">
+          <div class="mat-label-wrapper">
+            <mat-label>Sprint</mat-label>
+          </div>
+          <mat-form-field appearance="fill">
+            <mat-select [(ngModel)]="editedIssue.sprint.name">
+              <mat-option *ngFor="let sprint of sprints" [value]="sprint.name">{{ sprint.name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div
+          class="issue-field"
+          *ngIf="editedIssue.reporter && editedIssue.reporter.profilePicture"
+        >
+          <div class="mat-label-wrapper">
+            <mat-label>Reporter</mat-label>
+          </div>
+          <div class="reporter-info">
+            <img
+              class="reporter-image"
+              [src]="editedIssue.reporter.profilePicture"
+              alt="Reporter Image"
+            />
+            <input matInput type="text" [(ngModel)]="editedIssue.reporter.fullName" />
+          </div>
+        </div>
+        <div class="issue-field" *ngIf="editedIssue.assignee">
+          <div class="mat-label-wrapper">
+            <mat-label>Assignee</mat-label>
+          </div>
+          <div class="assignee-info">
+            <img
+              class="assignee-image"
+              [src]="editedIssue.assignee.profilePicture"
+              alt="Assignee Image"
+            />
+            <input matInput type="text" [(ngModel)]="editedIssue.assignee.fullName" />
+          </div>
+        </div>
+      </div>
+
+      <div class="right-section col-md-6">
+        <div class="issue-field">
+          <div class="mat-label-wrapper">
+            <mat-label>Estimated Time</mat-label>
+          </div>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="editedIssue.estimatedTime"
+            readonly
+            disabled
+          />
+        </div>
+        <div class="issue-field">
+          <div class="mat-label-wrapper">
+            <mat-label>Logged Time</mat-label>
+          </div>
+          <input matInput type="number" [(ngModel)]="editedIssue.loggedTime" />
+        </div>
+        <div class="issue-field">
+          <div class="mat-label-wrapper">
+            <mat-label>Progress</mat-label>
+          </div>
+          <div class="progress">
+            <div
+              class="progress-bar"
+              role="progressbar"
+              [style.width]="(editedIssue.loggedTime / editedIssue.estimatedTime) * 100 + '%'"
+              [ngClass]="getProgressBarColor()"
+            >
+              {{ editedIssue.loggedTime }} / {{ editedIssue.estimatedTime }}
+            </div>
+          </div>
+        </div>
+        <div class="save-button">
+          <button mat-raised-button color="primary" (click)="saveChanges()">
+            <mat-icon>save</mat-icon>
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="issue-field">
+      <div class="mat-label-wrapper">
+        <mat-label>Issue Childs</mat-label>
+        <button mat-icon-button (click)="toggleTable()" class="toggle-button">
+          <mat-icon aria-hidden="false" aria-label="Toggle child issues">
+            {{ showTable ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
+          </mat-icon>
+        </button>
+      </div>
+      <app-child-issues *ngIf="showTable" [currentIssue]="editedIssue"></app-child-issues>
+    </div>
+    <!-- Save button -->
+  </div>
+</div>

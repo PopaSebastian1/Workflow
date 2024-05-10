@@ -69,5 +69,10 @@ namespace Licenta.Server.Services
         {
             return await _unitOfWork.UserRepository.UpdateUser(email, firstName, lastName);
         }
+        public async Task<Project?> JoinProject(string email, string key)
+        {
+
+            return await _unitOfWork.UserRepository.JoinProject(email, key);
+        }
     }
 }

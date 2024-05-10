@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Licenta.Server.DataLayer.Utils
 {
-    public class AppDbContext: IdentityDbContext<User,IdentityRole<Guid>, Guid>
+    public class AppDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
-        public override DbSet<User> Users { get; set; }= default!;
+        public override DbSet<User> Users { get; set; } = default!;
         public DbSet<Skill> Skills { get; set; }
         public DbSet<UserSkill> UserSkills { get; set; }
         public DbSet<Project> Projects { get; set; }
@@ -19,7 +19,7 @@ namespace Licenta.Server.DataLayer.Utils
         public DbSet<Issue> Issues { get; set; }
         public DbSet<IssueStatus> IssuesStatus { get; set; }
         public DbSet<IssueType> IssueTypes { get; set; }
-       
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,9 +40,15 @@ namespace Licenta.Server.DataLayer.Utils
                  .WithMany(u => u.Issues)
                  .HasForeignKey(i => i.AssigneeId)
                  .OnDelete(DeleteBehavior.Restrict);
-
+            modelBuilder.Entity<Project>()
+                .HasMany(p => p.IssueStatuses)
+                .WithMany(i => i.Projects)
+                .UsingEntity(j => j.ToTable("ProjectIssueStatuses"));
+            modelBuilder.Entity<Project>()
+                .HasMany(p => p.Administrators)
+                .WithMany(u=> u.AdministratorProjects)
+                .UsingEntity(j => j.ToTable("ProjectAdministrators"));
 
         }
     }
 }
-    

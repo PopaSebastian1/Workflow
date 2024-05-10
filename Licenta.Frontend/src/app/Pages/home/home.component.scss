@@ -1,0 +1,157 @@
+
+.card-grid {
+  display: grid;
+  background:#fff; /* Background color for the card grid */
+  grid-template-columns: repeat(auto-fill, minmax(250px, fr));
+  gap: 5px; /* Decreased the gap between cards */
+  padding: 24px;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+.card-footer
+{
+  display:flex;
+  align-items: center;
+  justify-content: center;
+}
+.card-footer-text
+{
+  opacity: 50%;
+}
+.card {
+  background: #f5f5f5;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  border-radius: 0px;
+  overflow: hidden;
+  position: relative;
+  width: 250px;
+  height: 350px;
+  transition: all 0.3s;
+  margin: 1em;
+  display: flex; /* Add flexbox container */
+  flex-direction: column; /* Arrange items vertically */
+  justify-content: space-between; /* Center items vertically */
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.2); /* Enhanced hover shadow */
+}
+
+.card-header {
+  background: #3498db; /* Updated header background color */
+  color: #fff;
+  padding: 20px;
+  font-size: 1.2em;
+  text-align: center;
+}
+
+.card-body {
+  // padding: 30px;
+  text-align: center; /* Center the body content */
+}
+
+.card-title {
+  color: #3498db; /* Updated title color */
+  margin-bottom: 20px;
+}
+
+.card-button {
+  background: #3498db; /* Updated button background color */
+  color: #fff;
+  // border: 50px;
+  padding: 10px;
+  border-radius: 50px;
+  transition: all 0.3s;
+  font-size: 1.2em;
+  font-weight: bold;
+  font-family: 'Arial', sans-serif; /* Changed font to Arial */
+  box-shadow: 2px 2px 2px rgba(0,0,0,0.2);
+  // margin-top: 20px; /* Added margin to separate button */
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
+.card-button:hover {
+  background: linear-gradient(135deg, #207ce5, #0056b3); /* Button gradient on hover */
+  transform: scale(1.05); /* Scale effect on hover */
+}
+.floating-button {
+  position: fixed;
+  bottom: 1.5em;
+  right: 0.5em;
+}
+
+.main-button {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: #3498db;
+  cursor: pointer;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s;
+  animation: pulse 1.5s infinite; // Add pulse animation
+
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.15);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+}
+
+.sub-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #207ce5;
+  cursor: pointer;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s;
+  opacity: 0; /* Initially invisible */
+  pointer-events: none; /* Initially not clickable */
+}
+
+.floating-button:hover .main-button {
+  background: linear-gradient(135deg, #207ce5, #0056b3); /* Button gradient on hover */
+  transform: rotate(45deg);
+}
+
+.floating-button:hover .sub-button {
+  opacity: 1; /* Visible on hover */
+  pointer-events: auto; /* Clickable on hover */
+}
+
+
+.button-group {
+  position: absolute;
+  top: -22em; /* Adjust as needed to position above the main button */
+  right: 0em  ; /* Adjust as needed to position above the main button */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  transform: translateY(+100%); /* Move it above the plus button */
+  transition: all 0.3s;
+}
+
+.floating-button:hover .button-group {
+  transform: translateY(0);
+}
+
+.sub-button + .sub-button {
+  margin-top: 10px;
+}
+
+.sub-button:hover {
+  background: #0056b3;
+}

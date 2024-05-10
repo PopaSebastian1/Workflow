@@ -7,6 +7,7 @@ using Licenta.Server.Repository.Interfeces;
 using Licenta.Server.Repository;
 using Licenta.Server.Services.Interfaces;
 using Licenta.Server.Services;
+using System.Text.Json.Serialization;
 
 namespace Licenta.Server.Settings;
 

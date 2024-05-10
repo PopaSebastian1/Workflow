@@ -1,0 +1,167 @@
+.page {
+  position: relative;
+  height: 80%; /* Adjust this value */
+  width: 100%;
+  align-items: center;
+  justify-content: flex;
+  display:flex;
+}
+.issue-details {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    margin-top: 10px;
+    padding: 20px;
+    border: 2px solid #aaaaaa;
+    border-radius: 5px;
+    justify-content: center;
+
+  }
+  .description-field textarea
+  {
+    height: 100px;
+  }
+  .issue-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .issue-dropdowns {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .issue-content {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .left-section,
+  .right-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .left-section {
+    border-right: 1px solid black;
+    padding-right: 20px;
+  }
+  
+  .right-section {
+    padding-left: 20px;
+  }
+  
+  .issue-field {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .mat-label {
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  textarea,
+  input {
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    height: 30px;
+    width: 100%;
+  }
+  
+  .mat-progress-bar {
+    margin-top: 5px;
+  }
+  
+  h2 {
+    font-size: 30px;
+    font-weight: 400;
+  }
+  
+  .progress-low {
+    background-color: red;
+  }
+  
+  .progress-medium {
+    background-color: yellow;
+  }
+  
+  .progress-high {
+    background-color: green;
+  }
+  
+  .progress-none {
+    background-color: transparent;
+  }
+  
+  .reporter-info,
+  .assignee-info {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  .reporter-image,
+  .assignee-image {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .mat-label-wrapper {
+    display: flex;
+    align-items: center;
+  }
+  .toggle-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    margin-left: 10px; /* Adaugă un pic de spațiu între text și buton */
+  }
+  .toggle-button mat-icon {
+    color: #000; /* Schimbați această culoare în funcție de ce culoare doriți pentru iconiță */
+  }
+  .save-button {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+  
+  .save-button button {
+    background-color: #007BFF; /* Blue */
+    border: none;
+    color: white;
+    padding: 10px 20px; /* Reduced padding to make button smaller */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px; /* Reduced font size to make button smaller */
+    margin: 4px 2px;
+    cursor: pointer;
+    transition-duration: 0.4s;
+    /* Added transition for a smooth color change */
+    transition: background-color 0.4s ease;
+  }
+  
+  .save-button button:hover {
+    background-color: #0056b3;
+    /* Added transform for a small scale effect on hover */
+    transform: scale(1.1);
+  }
+  
+  .save-button button:active {
+    /* Added transform for a small scale effect on click */
+    transform: scale(0.9);
+  }
+  
+  .save-button button mat-icon {
+    vertical-align: middle;
+    margin-right: 8px;
+  }

@@ -7,7 +7,7 @@ namespace Licenta.Server.DataLayer.Utils
     public class UnitOfWork : IUnitOfWork
     {
         private readonly AppDbContext _context;
-        public UnitOfWork(AppDbContext context, UserRepository userRepository, UserSkillRepository userSkillRepository, SkillRepository skillRepository, SprintRepository sprintRepository, ProjectRepository projectsRepository) 
+        public UnitOfWork(AppDbContext context, UserRepository userRepository, UserSkillRepository userSkillRepository, SkillRepository skillRepository, SprintRepository sprintRepository, ProjectRepository projectsRepository, IssueStatusRepository issueStatusRepository, IssueTypeRepository issueTypeRepository, IssueRepository issueRepository, CommentRepository commentRepository)
         {
             _context = context;
             UserRepository = userRepository;
@@ -15,6 +15,10 @@ namespace Licenta.Server.DataLayer.Utils
             SkillRepository = skillRepository;
             SprintRepository = sprintRepository;
             ProjectsRepository = projectsRepository;
+            IssueStatusRepository = issueStatusRepository;
+            IssueTypeRepository = issueTypeRepository;
+            IssueRepository = issueRepository;
+            CommentRepository = commentRepository;
         }
         public UserRepository UserRepository { get; }
         public UserSkillRepository UserSkillRepository { get; }
@@ -22,11 +26,9 @@ namespace Licenta.Server.DataLayer.Utils
         public IssueStatusRepository IssueStatusRepository { get; }
         public IssueRepository IssueRepository { get; }
         public IssueTypeRepository IssueTypeRepository { get; }
-        public 
         public SprintRepository SprintRepository { get; }
         public ProjectRepository ProjectsRepository { get; }
         public CommentRepository CommentRepository { get; }
-        public 
 
 
         public async Task SaveChangesAsync()

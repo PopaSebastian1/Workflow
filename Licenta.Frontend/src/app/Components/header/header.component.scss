@@ -1,0 +1,73 @@
+.header {
+  background-color: #3498db;
+  color: #fff;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  display: flex;
+  height: 3em;
+}
+
+h2 {
+  align-items: center;
+  display: flex;
+  font-size: 24px;
+  margin: 0;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.navbar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex; /* Setarea elementelor ul ca flexbox container */
+  align-items: center; /* Alinierea verticală a elementelor */
+}
+
+.navbar li {
+  margin-right: 20px;
+}
+
+.navbar li:last-child {
+  margin-right: 0; /* Eliminarea margin-right pentru ultimul element li */
+}
+
+.navbar li a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+.navbar li a:hover {
+  color: #371d1d;
+}
+
+.navbar li .btn {
+  background-color: #3498db;
+  color: #fff;
+  height: 100%; /* Asigurarea ocupării întregii înălțimi a barei de navigare */
+  border: none;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.navbar li .btn:hover {
+  background-color: #2078b5;
+}
+
+.navbar li .btn i {
+  margin-right: 8px;
+}

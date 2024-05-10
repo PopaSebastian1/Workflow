@@ -1,0 +1,21 @@
+.mat-table {
+    width: 100%;
+  }
+  
+  .mat-header-cell,
+  .mat-cell {
+    padding: 16px;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .mat-row {
+    min-height: 48px;
+    max-height: 48px;
+  }
+  
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }

@@ -1,0 +1,105 @@
+<div class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Add Issue</h2>
+      <button class="close" (click)="close()">&times;</button>
+    </div>
+    <form (ngSubmit)="onSubmit()" class="form-grid">
+      <div class="form-column">
+        <label for="title">Title:</label>
+        <input
+          type="text"
+          id="title"
+          name="title"
+          [(ngModel)]="title"
+          placeholder="Enter title"
+        />
+
+        <label for="description">Description:</label>
+        <textarea
+          id="description"
+          name="description"
+          [(ngModel)]="description"
+          placeholder="Enter task description"
+        ></textarea>
+
+        <label for="createdAt">Created At:</label>
+        <input
+          type="datetime-local"
+          id="createdAt"
+          name="createdAt"
+          [(ngModel)]="createdAt"
+          placeholder="Select created date and time"
+        />
+
+        <label for="dueDate">Due Date:</label>
+        <input
+          type="datetime-local"
+          id="dueDate"
+          name="dueDate"
+          [(ngModel)]="dueDate"
+          placeholder="Select due date and time"
+        />
+
+        <label for="estimatedTime">Estimated Time:</label>
+        <input
+          type="number"
+          id="estimatedTime"
+          name="estimatedTime"
+          [(ngModel)]="estimatedTime"
+          placeholder="Enter estimated time"
+        />
+      </div>
+
+      <div class="form-column">
+        <label for="loggedTime">Logged Time:</label>
+        <input
+          type="number"
+          id="loggedTime"
+          name="loggedTime"
+          [(ngModel)]="loggedTime"
+          placeholder="Enter logged time"
+        />
+
+        <label for="sprintId">Sprint:</label>
+        <select id="sprintId" name="sprintId" [(ngModel)]="sprintId">
+          <option *ngFor="let sprint of sprintsProject" [value]="sprint.id">
+            {{ sprint.name }}
+          </option>
+        </select>
+
+        <label for="assigneEmail">Assignee Email:</label>
+        <select id="assigneEmail" name="assigneEmail" [(ngModel)]="assigneEmail">
+          <option *ngFor="let user of users" [value]="user.fullName">
+            <img [src]="user.profilePicture" alt="Profile Picture" width="20" height="20"> {{ user.fullName }}
+          </option>
+        </select>
+        
+        <label for="reporterEmail">Reporter Email:</label>
+        <select id="reporterEmail" name="reporterEmail" [(ngModel)]="reporterEmail">
+          <option *ngFor="let user of users" [value]="user.fullName">
+            <img [src]="user.profilePicture" alt="Profile Picture" width="20" height="20"> {{ user.fullName }}
+          </option>
+        </select>
+
+        <label for="issueStatus">Issue Status:</label>
+        <select id="issueStatus" name="issueStatus" [(ngModel)]="issueStatus">
+          <option value="Done">Done</option>
+          <option value="In Progress">In Progress</option>
+          <option value="To Do">To Do</option>
+        </select>
+
+        <label for="issueType">Issue Type:</label>
+        <select id="issueType" name="issueType" [(ngModel)]="issueType">
+          <option value="Story">Story</option>
+          <option value="Bug">Bug</option>
+          <option value="Task">Task</option>
+        </select>
+      </div>
+
+      <div class="form-footer">
+        <button type="submit">Add</button>
+      </div>
+    </form>
+  </div>
+</div>
