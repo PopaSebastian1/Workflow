@@ -8,7 +8,6 @@ Our Project Management Tool for IT Projects offers a range of features to suppor
 - **Task Management:** Easily create, assign, and track tasks within your project. Keep your team organized and focused on the most critical aspects of your project.
 - **Resource Tracking:** Monitor resource allocation and utilization to ensure optimal project workflow. Identify potential bottlenecks and allocate resources effectively to meet project deadlines.
 - **User-Friendly Interface:** Our intuitive user interface is designed for ease of use, allowing you to navigate through project tasks and resources effortlessly.
-- **Collaboration:** Foster collaboration among team members by facilitating communication and task assignment within the platform. Keep everyone informed and engaged throughout the project lifecycle.
   
 ## Getting Started
 To get started with our Project Management Tool for IT Projects, follow these steps:
@@ -22,7 +21,6 @@ To get started with our Project Management Tool for IT Projects, follow these st
 Here's how you can leverage our Project Management Tool for IT Projects effectively:
 - **Task Management:** Create tasks, assign them to team members, set deadlines, and track progress.
 - **Resource Tracking:** Monitor resource utilization, including human resources, equipment, and budget allocation.
-- **Collaboration:** Communicate with team members, share updates, and collaborate on tasks and projects within the platform.
 
 ## Technologies
 Our Project Management Tool for IT Projects is built using the following technologies:
