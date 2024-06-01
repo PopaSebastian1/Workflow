@@ -9,7 +9,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './Pages/home/home.component';
 import { ProfileComponent } from './Pages/profile/profile.component';
-import { ContentComponent } from './content/content.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { MatListModule } from '@angular/material/list';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -39,6 +38,11 @@ import { ChildIssuesComponent } from './Components/child-issues/child-issues.com
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SprintComponent } from './Components/sprint/sprint.component';
+import { SprintPageComponent } from './Pages/sprint-page/sprint-page.component';
+import { StatisticsComponent } from './Components/statistics/statistics.component';
+import { DashboardComponent } from './Pages/dashboard/dashboard.component';
+import { TableComponent } from './Components/table/table.component';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -47,7 +51,6 @@ import { SprintComponent } from './Components/sprint/sprint.component';
     RegisterComponent,
     HomeComponent,
     ProfileComponent,
-    ContentComponent,
     SidenavComponent,
     BodyComponent,
     HeaderComponent,
@@ -61,6 +64,10 @@ import { SprintComponent } from './Components/sprint/sprint.component';
     TeamPageComponent,
     ChildIssuesComponent,
     SprintComponent,
+    SprintPageComponent,
+    StatisticsComponent,
+    DashboardComponent,
+    TableComponent,
   ],
   imports: [
     BrowserModule,
@@ -76,6 +83,7 @@ import { SprintComponent } from './Components/sprint/sprint.component';
     MatSelectModule,
     MatOptionModule,
     MatProgressBarModule,
+    MatPaginatorModule,
     MatDialogModule,
     MatMenuModule,
     MatIconModule,

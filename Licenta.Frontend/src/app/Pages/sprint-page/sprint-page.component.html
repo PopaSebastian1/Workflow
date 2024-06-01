@@ -1,0 +1,23 @@
+<div class="container">
+    <h1>Sprints</h1>
+    <div class="controls">
+       
+    <select (change)="onFilterChange($event)">
+        <option value="all">All</option>
+        <option value="Completed">Completed</option>
+        <option value="Active">Active</option>
+        <option value="Planned">Planned</option>
+    </select>
+        <select (change)="onSortChange($event)">
+            <option value="startDate">Start Date</option>
+            <option value="endDate">End Date</option>
+            <option value="remainingDays">Remaining Days</option>
+        </select>
+        <button class="view-mode-button" (click)="toggleViewMode()">
+            <mat-icon>{{isGridView ? 'view_list' : 'view_module'}}</mat-icon>
+        </button>
+    </div>
+    <div [ngClass]="{'sprint-row': !isGridView, 'sprint-grid': isGridView}">
+        <app-sprint *ngFor="let sprint of filteredSprints" [sprint]="sprint" ></app-sprint>
+    </div>
+</div>

@@ -65,6 +65,26 @@ namespace Licenta.Server.Services
             };
             return userDTO;
         }
+        public async Task<UserDTO?> GetUserAsyncById(Guid id)
+        {
+                     User user = await _unitOfWork.UserRepository.GetUserAsyncById(id);
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            UserDTO userDTO = new UserDTO()
+            {
+                Id = user.Id,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Role = user.Role,
+                ProfilePicture = user.ProfilePicture,
+                Skills = _unitOfWork.UserSkillRepository.GetSkillsAsync(user.Email).Result
+            };
+            return userDTO;
+        }
         public async Task<User?> UpdateUserAsync(string email, string firstName, string lastName)
         {
             return await _unitOfWork.UserRepository.UpdateUser(email, firstName, lastName);
@@ -73,6 +93,18 @@ namespace Licenta.Server.Services
         {
 
             return await _unitOfWork.UserRepository.JoinProject(email, key);
+        }
+        public async Task<List<Project>> GetAllUserProjects(string email)
+        {
+            return await _unitOfWork.UserRepository.GetAllUserProjects(email);
+        }
+        public async Task<List<Issue>> GetAllUserIssues(Guid id)
+        {
+            return await _unitOfWork.UserRepository.GetAllUserIssues(id);
+        }
+        public async Task<List<Issue>> GetAllUserIssuesByProjectId(Guid projectId, string email)
+        {
+            return await _unitOfWork.UserRepository.GetAllUserIssuesByProjectId(projectId, email);
         }
     }
 }

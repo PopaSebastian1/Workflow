@@ -1,4 +1,5 @@
-﻿using Microsoft.Build.Evaluation;
+﻿using Licenta.Server.DataLayer.Enum;
+using Microsoft.Build.Evaluation;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -15,6 +16,6 @@ namespace Licenta.Server.DataLayer.Models
         public virtual Project Project { get; set; }
         public List<Issue> Issues { get; set; }
 
-       
+        public SprintStatus Status { get; set; }
     }
 }

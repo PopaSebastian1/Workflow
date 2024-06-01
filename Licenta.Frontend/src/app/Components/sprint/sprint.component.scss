@@ -1,84 +1,193 @@
 .container {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.sprint-row {
-    margin-bottom: 20px;
+  max-width: 100%; /* Extends container to full width of the screen */
+  margin: 0; /* Removes auto margin to start from the left edge */
+  padding: 0 15px; /* Adds padding to prevent content from touching the screen edges */
 }
 
 .sprint-card {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
+  margin-top: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Adds smooth transitions */
 }
 
-.sprint-info {
-    margin-bottom: 10px;
+.sprint-card:hover {
+  transform: translateY(-5px); /* Slight lift on hover */
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15); /* Enhance shadow on hover */
 }
 
-.calendar {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
+.card-title {
+    height: fit-content;
+    max-height: 2.4rem; /* 2 lines of text */
+    font-size: 1.2rem;
+    font-weight: 600; /* Makes the title bold */
+    margin-bottom: 10px; /* Adds space below the title */
+    overflow: hidden; /* Hides overflowed text */
+    text-overflow: ellipsis; /* Indicates the text is truncated */
+    display: -webkit-box; /* Necessary for line-clamp */
+    -webkit-line-clamp: 2; /* Truncates text after 2 lines */
+    -webkit-box-orient: vertical; /* Necessary for line-clamp */
+  }
+
+.card-text {
+  font-size: 0.9rem;
+  margin-bottom: 10px; /* Adds space between text elements */
 }
 
-.day {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.progress-bar {
+  border-radius: 5px;
+  transition: width 0.3s ease; /* Smooth transition for progress bar */
 }
 
-.day-number {
-    font-size: 14px;
-    margin-bottom: 5px;
+.btn {
+  font-size: 0.8rem;
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transitions for hover effects */
 }
 
-.sprint-indicator {
-    height: 10px;
-    width: 10px;
-    border-radius: 50%;
-    background-color: #007bff;
-}
-.issue-list {
-    list-style-type: none;
-    padding-left: 0;
-}
-
-.issue-list li {
-    margin-bottom: 5px;
+.btn:hover {
+  background-color: #0056b3; /* Darken button color on hover */
+  transform: scale(1.05); /* Slightly enlarge button on hover */
 }
 
 .issue-bullet {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    background-color: #007bff; /* sau orice altă culoare preferată */
-    border-radius: 50%;
-    margin-right: 5px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 5px;
 }
-.mat-table {
-    width: 100%;
-    border-collapse: collapse;
+
+.sprint-row {
+  margin-top: 20px;
+}
+
+.sprint-info p {
+  margin-bottom: 5px;
+}
+
+.progress {
+  height: 10px;
+  margin-bottom: 10px;
+}
+
+.card-footer {
+  background-color: #f8f9fa;
+  border-top: 1px solid #e9ecef; /* Adds a top border to the footer */
+  padding: 10px; /* Adds padding to the footer */
+  display: flex;
+  justify-content: flex-start; /* Aligns button to the right */
+}
+
+.issue-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.issue-list .list-group-item {
+  border: none;
+  padding-left: 0; /* Removes left padding */
+  display: flex;
+  align-items: center; /* Centers bullet and text vertically */
+}
+
+.toggle-issues-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.toggle-issues-btn:hover {
+  background-color: rgba(
+    0,
+    123,
+    255,
+    0.1
+  ); /* Adds a light background on hover */
+  transform: scale(1.1); /* Slightly enlarge the button on hover */
+}
+
+@media (max-width: 576px) {
+  .sprint-card {
+    margin-top: 10px;
   }
-  
-  /* Stilizare pentru antetul tabelului */
-  .mat-header-cell, .mat-cell {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
+
+  .card-title {
+    font-size: 1rem;
   }
-  
-  .mat-header-row {
-    background-color: #f5f5f5;
+
+  .card-text {
+    font-size: 0.8rem;
   }
-  
-  /* Stilizare pentru rândurile tabelului */
-  .mat-row:nth-child(even) {
-    background-color: #f9f9f9;
+
+  .btn {
+    font-size: 0.7rem;
   }
-  
-  /* Stilizare pentru hover pe rândurile tabelului */
-  .mat-row:hover {
-    background-color: #f0f0f0;
+
+  .issue-bullet {
+    width: 6px;
+    height: 6px;
   }
+}
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+}
+.status-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  position: relative;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.status-label {
+  margin-right: 10px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.status-select {
+  display: flex;
+  align-items: center;
+  width: 10%; /* Păstrează lățimea la 20% */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.status-select select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding: 8px 10px; /* Ajustează padding-ul pentru săgeata personalizată */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  cursor: pointer;
+  flex: 1; /* Păstrează lățimea pentru a ocupa tot spațiul disponibil */
+  position: relative; /* Add this line */
+}
+
+.status-select::after {
+  content: "\25BE"; /* Unicode character for the custom arrow */
+  position: absolute;
+  right: 10px; /* Ajustează valoarea după cum este necesar */
+  font-size: 12px; /* Ajustează dimensiunea după cum este necesar */
+  color: #000; /* Culoarea săgeții personalizate */
+  pointer-events: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}

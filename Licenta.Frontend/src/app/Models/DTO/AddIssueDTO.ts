@@ -14,6 +14,7 @@ export class AddIssueDTO
     ReporterEmail: string;
     IssueStatus: string;
     IssueType: string; 
+    ParentIssueId: string;
     constructor()
     {
         this.Id = '';
@@ -29,5 +30,6 @@ export class AddIssueDTO
         this.ReporterEmail = '';
         this.IssueStatus = '';
         this.IssueType = '';
+        this.ParentIssueId = '';
     }
 }

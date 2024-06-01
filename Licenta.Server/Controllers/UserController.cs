@@ -21,6 +21,11 @@ namespace Licenta.Server.Controllers
         {
            return Ok(await _userService.GetAllAsync());
         }
+        [HttpGet("getUserById")]
+        public async Task<IActionResult> GetUserById(Guid id)
+        {
+            return Ok(await _userService.GetUserAsyncById(id));
+        }
         [HttpPost("addUserSkill")]
         public async Task<IActionResult> AddUserSkill(string email, Skill skill)
         {
@@ -41,5 +46,21 @@ namespace Licenta.Server.Controllers
         {
             return Ok(await _userService.JoinProject(email, key));
         }
+        [HttpGet("getUserProjects")]
+        public async Task<IActionResult> GetUserProjects(string email)
+        {
+            return Ok(await _userService.GetAllUserProjects(email));
+        }
+        [HttpGet("getUserIssues")]
+        public async Task<IActionResult> GetUserIssues(Guid Id)
+        {
+            return Ok(await _userService.GetAllUserIssues(Id));
+        }
+        [HttpGet("getAllUserIssuesByProject")]
+        public async Task<IActionResult> GetAllUserIssuesByProject(Guid Id, string email)
+        {
+            return Ok(await _userService.GetAllUserIssuesByProjectId(Id, email));
+        }
+
     }
 }

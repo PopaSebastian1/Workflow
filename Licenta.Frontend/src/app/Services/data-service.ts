@@ -4,6 +4,8 @@ import { UserRegister } from '../Models/UserRegister';
 import { HttpClient } from '@angular/common/http';
 import{map} from 'rxjs/operators';
 import { Skill } from '../Models/Skill';
+import { Issue } from '../Models/Issue';
+import { Project } from '../Models/Project';
 @Injectable({
   providedIn: 'root'
 })
@@ -41,11 +43,47 @@ export class DataService {
 
     );
   }
+  getUserById(id: string) {
+    return this.http.get<User>(`${this.apiUrl}/User/getUserById?id=${id}`).pipe(
+      map(response => {
+        return response as User;
+      })
+    );
+  }
   getUsersSkills(email: string) {
     return this.http.get<Skill[]>(this.apiUrl + '/User/getUserSkills/' + email).pipe(
       map(response => {
         return response as Skill[];
       })
     );
+  }
+  getAllUserIssues(Id: string) {
+    return this.http.get<Issue[]>(`${this.apiUrl}/User/getUserIssues?Id=${Id}`).pipe(
+      map(response => {
+        return response as Issue[];
+      })
+    );
+  }
+  getAllUserProject(email: string) {
+    return this.http.get<Project[]>(`${this.apiUrl}/User/getUserProjects?email=${email}`).pipe(
+      map(response => {
+        return response as Project[];
+      })
+    );
+  }
+  getAllIssuesForProject(id: string) {
+    return this.http.get<Issue[]>(`${this.apiUrl}/Issue/getAllIssuesForProject?id=${id}`).pipe(
+      map(response => {
+        return response as Issue[];
+      })
+    );
+  }
+  logOut()
+  {
+    if (localStorage.getItem('user')) {
+      localStorage.removeItem('user');
+      localStorage.removeItem('skills');
+      this.userData = null;
+    }
   }
 }

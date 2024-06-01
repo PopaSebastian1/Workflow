@@ -1,0 +1,16 @@
+<div *ngFor="let dataset of data; let i = index" class="chart-container">
+  <div class="chart-header">
+    <select [(ngModel)]="chartTypes[i]" (change)="changeChartType(i)">
+      <option value="pie">Pie</option>
+      <option value="doughnut">Doughnut</option>
+      <option value="bar">Bar</option>
+      <option value="line">Line</option>
+      <option value="polarArea">Polar Area</option>
+      <!-- Add more options as needed -->
+    </select>
+    <div class="remove">
+      <button (click)="removeChart(i)">X</button>
+    </div>
+  </div>
+  <canvas #chartCanvas></canvas>
+</div>

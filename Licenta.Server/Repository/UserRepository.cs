@@ -55,6 +55,10 @@ public class UserRepository
     {
         return await _context.Users.Where(user => user.Email == email).FirstOrDefaultAsync();
     }
+    public async Task<User?> GetUserAsyncById(Guid id)
+    {
+        return await _context.Users.Where(user => user.Id == id).FirstOrDefaultAsync();
+    }
     public async Task<User?> UpdateUser(string email, string firstName, string lastName)
     {
         var user = await _context.Users.Where(user => user.Email == email).FirstOrDefaultAsync();
@@ -74,7 +78,7 @@ public class UserRepository
         {
             throw new ArgumentNullException(nameof(user));
         }
-        return await _context.Projects.Where(p => p.Owner.Email == email).ToListAsync();
+        return await _context.Projects.Where(p => p.Members.Contains(user)).ToListAsync();
     }
     public async Task<Project?> JoinProject(string email, string projectKey)
     {
@@ -91,5 +95,29 @@ public class UserRepository
         project.Members.Add(user);
         _context.SaveChanges();
         return project;
+    }
+    public async Task<List<Issue>> GetAllUserIssues(Guid id)
+    {
+        var user = await _context.Users.Where(user => user.Id == id).FirstOrDefaultAsync();
+        if (user == null)
+        {
+            throw new ArgumentNullException(nameof(user));
+        }
+        return await _context.Issues.Where(i => i.Assignee.Id == id).ToListAsync();
+    }
+    public async Task<List<Issue>> GetAllUserIssuesByProjectId(Guid projectId, string email)
+    {
+        var user = await _context.Users.Where(user => user.Email == email).FirstOrDefaultAsync();
+        if (user == null)
+        {
+            throw new ArgumentNullException(nameof(user));
+        }
+        return await _context.Issues.Where(i => i.Assignee.Email == email && i.Project.ProjectId == projectId).ToListAsync();
+    }
+    public async Task<List<Project>> GetAllUserProjects(Guid userId)
+    {
+        var user= await _context.Users.Where(user => user.Id == userId).FirstOrDefaultAsync();
+        var projects = await _context.Projects.Where(p => p.Members.Contains(user)).ToListAsync();
+        return projects;
     }
 }

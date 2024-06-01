@@ -7,8 +7,8 @@
   align-items: center;
   position: relative;
   width: 100%;
-  display: flex;
   height: 3em;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
@@ -32,8 +32,8 @@ h2 {
   list-style: none;
   padding: 0;
   margin: 0;
-  display: flex; /* Setarea elementelor ul ca flexbox container */
-  align-items: center; /* Alinierea verticală a elementelor */
+  display: flex;
+  align-items: center;
 }
 
 .navbar li {
@@ -41,7 +41,7 @@ h2 {
 }
 
 .navbar li:last-child {
-  margin-right: 0; /* Eliminarea margin-right pentru ultimul element li */
+  margin-right: 0;
 }
 
 .navbar li a {
@@ -52,13 +52,13 @@ h2 {
 }
 
 .navbar li a:hover {
-  color: #371d1d;
+  color: #ffdf00;
 }
 
 .navbar li .btn {
   background-color: #3498db;
   color: #fff;
-  height: 100%; /* Asigurarea ocupării întregii înălțimi a barei de navigare */
+  height: 100%;
   border: none;
   font-size: 16px;
   transition: background-color 0.3s ease;
@@ -70,4 +70,73 @@ h2 {
 
 .navbar li .btn i {
   margin-right: 8px;
+}
+
+.user-profile {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.user-profile img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.user-profile img:hover {
+  transform: scale(1.1);
+}
+
+/* User menu styling */
+.user-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px); /* Apare la 10px sub imagine */
+  background-color: white;
+  color: black;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  border-radius: 4px;
+  width: 150px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.user-menu ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.user-menu ul li {
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+}
+
+.user-menu ul li a {
+  color: black;
+  text-decoration: none;
+  width: 100%; /* Asigură că linkurile ocupă întreg spațiul */
+  padding: 5px 0;
+  transition: background-color 0.3s ease;
+}
+
+.user-menu ul li a:hover {
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Show user menu when toggled */
+.user-menu.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
 }

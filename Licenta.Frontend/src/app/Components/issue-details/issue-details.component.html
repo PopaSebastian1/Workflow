@@ -69,34 +69,31 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div
-          class="issue-field"
-          *ngIf="editedIssue.reporter && editedIssue.reporter.profilePicture"
-        >
+        <div class="issue-field">
           <div class="mat-label-wrapper">
             <mat-label>Reporter</mat-label>
           </div>
-          <div class="reporter-info">
-            <img
-              class="reporter-image"
-              [src]="editedIssue.reporter.profilePicture"
-              alt="Reporter Image"
-            />
-            <input matInput type="text" [(ngModel)]="editedIssue.reporter.fullName" />
-          </div>
+          <mat-form-field appearance="fill">
+            <mat-select [(ngModel)]="editedIssue.reporter" [compareWith]="compareUsers">
+              <mat-option *ngFor="let user of projectUsers" [value]="user">
+                <img class="reporter-image" [src]="user.profilePicture" alt="Reporter Image" />
+                {{ user.fullName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
-        <div class="issue-field" *ngIf="editedIssue.assignee">
+        <div class="issue-field">
           <div class="mat-label-wrapper">
             <mat-label>Assignee</mat-label>
           </div>
-          <div class="assignee-info">
-            <img
-              class="assignee-image"
-              [src]="editedIssue.assignee.profilePicture"
-              alt="Assignee Image"
-            />
-            <input matInput type="text" [(ngModel)]="editedIssue.assignee.fullName" />
-          </div>
+          <mat-form-field appearance="fill">
+            <mat-select [(ngModel)]="editedIssue.assignee" [compareWith]="compareUsers">
+              <mat-option *ngFor="let user of projectUsers" [value]="user">
+                <img class="assignee-image" [src]="user.profilePicture" alt="Assignee Image" />
+                {{ user.fullName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
       </div>
 
@@ -150,9 +147,25 @@
             {{ showTable ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
           </mat-icon>
         </button>
+       
+        <button mat-icon-button (click)="showAddIssue = !showAddIssue" class="add-issue-button">
+          <mat-icon>add</mat-icon>
+        </button>
+        <mat-form-field appearance="fill">
+          <mat-select placeholder="Select existent issue" (selectionChange)="addExistingIssueAsChild($event.value)">
+            <mat-option *ngFor="let issue of allIssues" [value]="issue">{{ issue.title }}</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
-      <app-child-issues *ngIf="showTable" [currentIssue]="editedIssue"></app-child-issues>
+      <app-add-issue *ngIf="showAddIssue"
+        (closeModalEvent)="closeModal()"
+        [parentIssue]="editedIssue"
+        [selectedProject]="selectedProject!"
+      ></app-add-issue>
+      <app-child-issues *ngIf="showTable" [currentIssue]="editedIssue" (removeIssueEvent)="handleRemoveIssueEvent($event)"></app-child-issues>
     </div>
-    <!-- Save button -->
+
+
+
+    </div>
   </div>
-</div>

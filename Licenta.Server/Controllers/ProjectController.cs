@@ -132,5 +132,11 @@ namespace Licenta.Server.Controllers
             await _projectService.RemoveAdministratorFromProject(projectId, email);
             return Ok();
         }
+        [HttpDelete("RemoveSprintFromProject")]
+        public async Task<IActionResult> RemoveSprintFromProject(Guid projectId, Guid sprintId)
+        {
+            await _projectService.RemoveSprintFromProject(projectId, sprintId);
+            return Ok();
+        }
     }
 }

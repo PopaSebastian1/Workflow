@@ -1,4 +1,5 @@
 ﻿using Licenta.Server.DataLayer.Dto;
+using Licenta.Server.DataLayer.Enum;
 using Licenta.Server.DataLayer.Models;
 using Licenta.Server.DataLayer.Utils;
 using Microsoft.EntityFrameworkCore;
@@ -34,11 +35,21 @@ namespace Licenta.Server.Repository
         }
         public async Task<List<Sprint>> GetSprintsByProjectId(Guid projectId)
         {
-            if(_context.Sprints == null)
+            if (_context.Sprints == null)
             {
                 return new List<Sprint>();
             }
-            return await _context.Sprints.Where(p=> p.ProjectId == projectId).ToListAsync();
+
+            var sprints = await _context.Sprints
+                .Where(p => p.ProjectId == projectId)
+                .ToListAsync();
+
+            foreach (var sprint in sprints)
+            {
+                sprint.Status = (SprintStatus)sprint.Status; // Converteste int la enum SprintStatus
+            }
+
+            return sprints;
         }
         public async Task<Sprint> AddSprint(AddSprintDto addSprint)
         {
@@ -79,7 +90,18 @@ namespace Licenta.Server.Repository
             {
                 return new List<Issue>();
             }
-            return await _context.Issues.Where(i=> i.SprintId == sprintId).ToListAsync();
+            return await _context.Issues.Include(p => p.IssueStatus).Where(i=> i.SprintId == sprintId).ToListAsync();
         }
+        public async Task UpdateSprintStatus(Guid sprintId, int status)
+        {
+            var sprint = await _context.Sprints.Where(p => p.Id == sprintId).FirstOrDefaultAsync();
+            if(sprint == null)
+            {
+                return;
+            }
+            sprint.Status = (SprintStatus)status;
+            await _context.SaveChangesAsync();
+        }
+       
     }
 }

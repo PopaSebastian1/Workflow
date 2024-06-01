@@ -15,6 +15,7 @@
         public string ReporterEmail { get; set; }
         public string IssueStatus { get; set; }
         public string IssueType { get; set; }
+        public Guid ParentIssueId { get; set; }
 
     }
 }

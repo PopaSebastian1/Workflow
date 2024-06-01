@@ -1,13 +1,21 @@
 <header class="header">
     <nav class="navbar">
         <ul>
-            <li><a href="#">Dashboard</a></li>
-            <li><a href="#">Projects</a></li>
-            <li><a href="sprint">Tasks</a></li>
-            <li><a href="team">Team</a></li>
+            <li><a href="/dashboard"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+            <li><a href="/home"><i class="fas fa-briefcase"></i> Projects</a></li>
+            <li><a href="/issues"><i class="fas fa-tasks"></i> Issues</a></li>
+            <li><a href="sprint"><i class="fas fa-calendar-alt"></i> Sprints</a></li>
+            <li><a href="team"><i class="fas fa-users"></i> Team</a></li>
             <li><button class="btn"><i class="fas fa-plus"></i> Create</button></li>
         </ul>
     </nav>
-    <h2>Workflow</h2>
-  </header>
-  
+    <div class="user-profile" (click)="toggleUserMenu()">
+        <img [src]="user?.profilePicture" alt="Profile Picture">
+        <div class="user-menu" [class.show]="userMenu" id="userMenu">
+            <ul>
+                <li><a [routerLink]="['/profile', user?.id]"><i class="fas fa-user"></i> Profile</a></li>
+                <li><a (click)="logOut()"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
+            </ul>
+        </div>
+    </div>
+</header>

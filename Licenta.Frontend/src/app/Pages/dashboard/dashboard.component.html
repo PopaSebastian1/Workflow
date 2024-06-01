@@ -1,0 +1,26 @@
+<div class="dashboard-container" (click)="isDropdownOpen = false">
+  <h1 class="dashboard-title">Dashboard</h1>
+  
+  <div class="dropdown-container">
+    <button class="dropdown-button" (mouseenter)="toggleDropdown()" (click)="$event.stopPropagation()">Add Chart</button>
+    <div class="dropdown-menu" [class.show]="isDropdownOpen">
+      <button class="dropdown-item" (click)="updateChartDataByStatus(); $event.stopPropagation()">By Status</button>
+      <button class="dropdown-item" (click)="updateChartDataByAssignee(); $event.stopPropagation()">By Assignee</button>
+      <button class="dropdown-item" (click)="updateChartIssuesBySprint(); $event.stopPropagation()">By Sprint</button>
+      <button class="dropdown-item" (click)="updateChartDataByResolutionTime(); $event.stopPropagation()">By Estiamted Time</button>
+      <button class="dropdown-item" (click)="updateChartDataByPerformance(); $event.stopPropagation()">Time Performance </button>
+    </div>
+  </div>
+  
+  <h2>Statistics</h2>
+  <hr>
+  <div class="statistics-wrapper">
+    <app-statistics (chartRemoved)="onRemoveChart(i)" class="statisticsComponent" *ngFor="let i = index of pieChartsData; let j = index let k=index" [data]="[pieChartsData[j]]" [labels]="[pieChartsLabels[j]]"  [titles]="[titles[k]]"></app-statistics>
+  </div>
+  
+  <h2>Your tasks</h2>
+  <hr>
+  <div class="tables-container">
+    <app-table [issues]="userIssues"></app-table>
+  </div>
+</div>

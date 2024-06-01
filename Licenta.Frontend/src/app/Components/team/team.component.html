@@ -30,7 +30,7 @@
                 <mat-icon>more_horiz</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="deleteUser(user.id)">Delete</button>
+                <button mat-menu-item (click)="deleteUser(user.email)" [disabled]="!currentUserIsAdmin()">Delete</button>
                 <button mat-menu-item (click)="viewProfile(user.id)">Profile</button>
             </mat-menu>
         </td>

@@ -9,6 +9,8 @@ import { IssueListComponent } from './Pages/issue-list/issue-list.component';
 import { IssueDetailsComponent } from './Components/issue-details/issue-details.component';
 import { TeamPageComponent } from './Pages/team-page/team-page.component';
 import { SprintComponent } from './Components/sprint/sprint.component';
+import { SprintPageComponent } from './Pages/sprint-page/sprint-page.component';
+import { DashboardComponent } from './Pages/dashboard/dashboard.component';
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' }, // redirect to `login-component`
   { path: 'login', component: LoginComponent },
@@ -19,7 +21,8 @@ const routes: Routes = [
   { path: 'issues', component: IssueListComponent },
   { path: 'issuedetails/:id', component: IssueDetailsComponent },
   { path: 'team', component: TeamPageComponent },
-  { path: 'sprint', component: SprintComponent },
+  { path: 'sprint', component: SprintPageComponent },
+  { path: 'dashboard', component: DashboardComponent },
   // other routes...
 ];
 

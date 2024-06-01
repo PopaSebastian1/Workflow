@@ -1,5 +1,4 @@
 <h1 class="page-title">Issues</h1>
-
 <div class="buttons-container">
   <button class="add-task-button" (click)="openAddIssue()">Add New Task</button>
   <div class="dropdown">
@@ -11,16 +10,13 @@
     </div>
   </div>
 </div>
-
 <div class="mat-table-container">
-  <table mat-table [dataSource]="issues" class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
     <!-- Number Column -->
     <ng-container matColumnDef="number">
       <th mat-header-cell *matHeaderCellDef>No.</th>
       <td mat-cell *matCellDef="let issue; let i = index">{{ i + 1 }}</td>
     </ng-container>
-
-    <!-- Title Column -->
     <!-- Title Column -->
     <ng-container matColumnDef="title">
       <th mat-header-cell *matHeaderCellDef>Title</th>
@@ -28,19 +24,16 @@
         <a [routerLink]="['/issuedetails', issue.id]">{{ issue.title }}</a>
       </td>
     </ng-container>
-
     <!-- Status Column -->
     <ng-container matColumnDef="status">
       <th mat-header-cell *matHeaderCellDef>Status</th>
       <td mat-cell *matCellDef="let issue">{{ issue.issueStatus.name }}</td>
     </ng-container>
-
     <!-- Type Column -->
     <ng-container matColumnDef="type">
       <th mat-header-cell *matHeaderCellDef>Type</th>
       <td mat-cell *matCellDef="let issue">{{ issue.issueType.name }}</td>
     </ng-container>
-
     <!-- Created on Column -->
     <ng-container matColumnDef="createdOn">
       <th mat-header-cell *matHeaderCellDef>Created On</th>
@@ -48,26 +41,33 @@
         {{ issue.createdAt | date : "dd MMMM yyyy" }}
       </td>
     </ng-container>
-
     <!-- Reporter Column -->
     <ng-container matColumnDef="reporter">
       <th mat-header-cell *matHeaderCellDef>Reporter</th>
       <td mat-cell *matCellDef="let issue">{{ issue.reporter.fullName }}</td>
     </ng-container>
-
     <!-- Assignee Column -->
     <ng-container matColumnDef="assignee">
       <th mat-header-cell *matHeaderCellDef>Assignee</th>
       <td mat-cell *matCellDef="let issue">{{ issue.assignee.fullName }}</td>
     </ng-container>
-
-    <
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let issue">
+        <button  mat-icon-button color="warn" (click)="removeIssue(issue.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
+  <mat-paginator class="my-paginator" [pageSize]="7" [pageSizeOptions]="[7,8,10,12,14,16,24]"></mat-paginator>
 </div>
 <app-add-issue
   *ngIf="showCreateProject"
   (closeModalEvent)="closeCreateProject()"
+  (submitEvent)="newIssueAdded()"
   [selectedProject]="selectedProject!"
 ></app-add-issue>

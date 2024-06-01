@@ -1,4 +1,5 @@
 ﻿using Licenta.Server.DataLayer.Dto;
+using Licenta.Server.DataLayer.Enum;
 using Licenta.Server.DataLayer.Models;
 using Licenta.Server.DataLayer.Utils;
 
@@ -38,6 +39,10 @@ namespace Licenta.Server.Services
         public async Task<List<Issue>> GetAllIssuesForSprint(Guid id)
         {
             return await _unitOfWork.SprintRepository.GetAllIssuesForSprint(id);
+        }
+        public async Task UpdateSprintStatus(Guid id, int status)
+        {
+            await _unitOfWork.SprintRepository.UpdateSprintStatus(id, status);
         }
     }
 }

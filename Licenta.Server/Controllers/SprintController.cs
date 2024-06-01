@@ -49,5 +49,11 @@ namespace Licenta.Server.Controllers
         {
             return Ok(await _sprintService.GetAllIssuesForSprint(id));
         }
+        [HttpPatch("UpdateSprintStatus")]
+        public async Task<IActionResult> UpdateSprintStatus(Guid id, int status)
+        {
+            await _sprintService.UpdateSprintStatus(id, status);
+            return Ok();
+        }
     }
 }

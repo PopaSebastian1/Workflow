@@ -1,50 +1,46 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { ProjectService } from '../../Services/project-service';
 import { Project } from '../../Models/Project';
 import { Sprint } from '../../Models/Sprint';
 import { SprintService } from '../../Services/sprint-service';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { SprintStatus } from '../../Models/SprintStatus';
+import { Issue } from '../../Models/Issue';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+
 @Component({
   selector: 'app-sprint',
   templateUrl: './sprint.component.html',
   styleUrls: ['./sprint.component.scss'],
 })
 export class SprintComponent implements OnInit {
-  project: Project | null = null;
-  sprintsProject: Sprint[] | null = null;
-  issues: boolean = false;
+  @Input() sprint: Sprint | null = null;
+  showIssues: boolean = false;
+  @Output() sprintStatusChanged= new EventEmitter();
+  issues: MatTableDataSource<Issue>;
+  displayedColumns: string[] = ['title', 'status', 'type'];
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatPaginator) set matPaginator(mp: MatPaginator) {
+    this.paginator = mp;
+    this.issues.paginator = this.paginator;
+  }
   constructor(
     private projectService: ProjectService,
     private sprintService: SprintService
-  ) {}
+  ) {
+    this.issues = new MatTableDataSource();
+  }
 
   ngOnInit(): void {
-    this.project = this.projectService.getSelectedProject();
-    console.log(this.project);
-    if (this.project != null) {
-      this.sprintService
-        .getSprintsByProjectId(this.project.projectId)
-        .subscribe((sprints) => {
-          this.sprintsProject = sprints;
-          console.log(this.sprintsProject);
-          this.loadIssuesForSprint();
-        });
-    }
-  }
-  
-  loadIssuesForSprint(): void {
-    const issuesObservables = this.sprintsProject?.map((sprint) => {
-      return this.sprintService.getAllIssuesBySprint(sprint.id);
-    }) ?? [];
-  
-    combineLatest(issuesObservables).subscribe((issuesArrays) => {
-      issuesArrays.forEach((issues, index) => {
-        this.sprintsProject![index].issues = issues;
-      });
-      console.log(this.sprintsProject);
+    console.log(this.sprint);
+    this.sprintService.getAllIssuesBySprint(this.sprint!.id).subscribe((issues) => {
+      this.issues.data = issues;
+      this.issues.paginator = this.paginator;
     });
   }
+
   calculateDuration(startDate: Date, endDate: Date): number {
     if (!startDate || !endDate) {
       console.error('Invalid dates provided to calculateDuration');
@@ -73,17 +69,57 @@ export class SprintComponent implements OnInit {
     return remainingDays >= 0 ? remainingDays : 0;
   }
 
-  calculateProgress(sprint: Sprint): number {
-    console.log(sprint);
-    if (!sprint || !sprint.issues) {
-      return 0; // Sau altă valoare implicită corespunzătoare
-    }
-  
-    const doneTasks = sprint.issues.filter(issue => issue.issueStatus?.name == 'Done').length;
-    const totalTasks = sprint.issues.length;
+  calculateProgress(issues: Issue[]): number {
+    const doneTasks = issues.filter(
+      (issue) => issue.issueStatus?.name == 'Done'
+    ).length;
+    const totalTasks = issues.length;
     return totalTasks > 0 ? doneTasks / totalTasks : 0;
   }
-  showIssues(sprint: any) {
-    this.issues =!this.issues;
+
+  toggleIssues() {
+    this.showIssues = !this.showIssues;
+  }
+  convertIssueType(nr:number)
+  {
+    if(nr==2)
+    {
+      return "Story"
+    }
+    if(nr==6)
+    {
+      return "Bug"
+    }
+    else
+    {
+      return "Task"
+    }
+  }
+  
+
+  calculateTimelineWidth(): string {
+    if (!this.sprint || !this.sprint.startDate || !this.sprint.endDate) {
+      return '0';
+    }
+
+    const startDate = new Date(this.sprint.startDate);
+    const endDate = new Date(this.sprint.endDate);
+
+    const totalDays =
+      (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24);
+
+    // Poți ajusta acest factor de scalare pentru a regla lungimea liniei de timp în funcție de spațiul disponibil în designul tău
+    const scaleFactor = 5;
+
+    return `${totalDays * scaleFactor}px`;
+  }
+  changeSprintStatus(status: number)
+  {
+    if(this.sprint)
+    {
+      this.sprintService.updateSprintStatus(this.sprint.id,status).subscribe((response)=>{
+      });
+      this.sprintStatusChanged.emit();
+    }
   }
 }

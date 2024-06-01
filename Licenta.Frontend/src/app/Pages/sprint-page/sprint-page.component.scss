@@ -1,0 +1,68 @@
+.sprint-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-gap: 20px;
+}
+.container {
+  max-width: 100%; 
+  margin: 0; 
+  padding: 0 15px; 
+  h1
+  {
+    margin-top: 20px;
+    padding: 10px;
+  }
+}
+.container {
+    max-width: 100%; /* Extends container to full width of the screen */
+    margin: 0; /* Removes auto margin to start from the left edge */
+    padding: 0 15px; /* Adds padding to prevent content from touching the screen edges */
+}
+.view-mode-button {
+    margin-left: 10px;
+    color: #007BFF; /* Primary color for the icon */
+    cursor: pointer; /* Changes cursor to pointer on hover */
+    font-size: 28px; /* Increases font size for the icon */
+    transition: color 0.3s ease, transform 0.3s ease, background-color 0.3s ease; /* Smooth transitions */
+    align-self: flex-end; /* Aligns the button to the end of the flex container */
+}
+
+.view-mode-button:hover {
+    color: #0056b3; /* Darken the icon color on hover */
+    background-color: rgba(0, 123, 255, 0.1); /* Adds a light background on hover */
+    transform: scale(1.1); /* Slightly increase the size of the button on hover */
+}
+
+.view-mode-button:active {
+    transform: scale(1); /* Reset scale on active press */
+}
+.controls {
+    margin-bottom: 20px; /* Adds space below the controls */
+    display: flex;
+    align-items: center; /* Aligns controls vertically */
+}
+
+.controls select {
+    margin-right: 10px; /* Adds space between select elements */
+    padding: 8px; /* Adds padding */
+    font-size: 16px; /* Font size */
+    border-radius: 5px; /* Rounded corners */
+    border: 1px solid #ccc; /* Border */
+}
+
+.controls button {
+    background-color: transparent; /* Makes the button background transparent */
+    color: #007BFF; /* Primary color for the icon */
+    padding: 8px; /* Adds some padding around the icon */
+    border: none; /* Removes default border */
+    cursor: pointer; /* Changes cursor to pointer on hover */
+    font-size: 28px; /* Increases font size for the icon */
+    transition: color 0.3s ease, transform 0.3s ease, background-color 0.3s ease; /* Smooth transitions */
+    border-radius: 50%; /* Makes the button circular */
+}
+
+.controls button:hover {
+    color: #0056b3; /* Darken the icon color on hover */
+    background-color: rgba(0, 123, 255, 0.1); /* Adds a light background on hover */
+    transform: scale(1.1); /* Slightly increase the size of the button on hover */
+}

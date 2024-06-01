@@ -18,7 +18,7 @@ namespace Licenta.Server.Repository
             {
                 return new List<Issue>();
             }
-            return await _context.Issues.ToListAsync();
+            return await _context.Issues.Include(p=>p.IssueStatus).ToListAsync();
         }
         public async Task<Issue> GetIssueById(Guid id)
         {
@@ -33,6 +33,7 @@ namespace Licenta.Server.Repository
                 .Include(p => p.IssueType)
                 .Include(p => p.ChildIssues)
                 .Include(p => p.Assignee)
+                .Include(p=>p.IssueStatus)
                 .Include(p => p.Reporter)
                 .Where(p => p.Id == id)
                 .FirstOrDefaultAsync();
@@ -68,6 +69,7 @@ namespace Licenta.Server.Repository
             return await _context.Issues
                 .Include(p=>p.IssueStatus)
                 .Include(p=>p.IssueType)
+                .Include(p => p.IssueStatus)
                 .Include(p=> p.Assignee)
                 .Include(p=> p.Reporter)
                                 .Where(p => p.ProjectId == projectId)
@@ -79,7 +81,9 @@ namespace Licenta.Server.Repository
             {
                 return new List<Issue>();
             }
-            return await _context.Issues.Where(p => p.SprintId == sprintId).ToListAsync();
+               
+            return await _context.Issues.Include(p => p.IssueStatus)
+                .Where(p => p.SprintId == sprintId).ToListAsync();
         }
         public async Task<List<Issue>> GetIssuesByAssigneeId(Guid assigneeId)
         {
@@ -87,7 +91,7 @@ namespace Licenta.Server.Repository
             {
                 return new List<Issue>();
             }
-            return await _context.Issues.Where(p => p.AssigneeId == assigneeId).ToListAsync();
+            return await _context.Issues.Include(p => p.IssueStatus).Where(p => p.AssigneeId == assigneeId).ToListAsync();
         }
         public async Task<List<Issue>> GetIssuesByReporterId(Guid reporterId)
         {
@@ -95,7 +99,7 @@ namespace Licenta.Server.Repository
             {
                 return new List<Issue>();
             }
-            return await _context.Issues.Where(p => p.ReporterId == reporterId).ToListAsync();
+            return await _context.Issues.Include(p => p.IssueStatus).Where(p => p.ReporterId == reporterId).ToListAsync();
         }
         public async Task<List<Issue>> GetIssuesByIssueStatusId(int issueStatusId)
         {
@@ -103,7 +107,7 @@ namespace Licenta.Server.Repository
             {
                 return new List<Issue>();
             }
-            return await _context.Issues.Where(p => p.IssueStatusId == issueStatusId).ToListAsync();
+            return await _context.Issues.Include(p => p.IssueStatus).Where(p => p.IssueStatusId == issueStatusId).ToListAsync();
         }
         public async Task<List<Issue>> GetIssuesByIssueTypeId(int issueTypeId)
         {
@@ -111,33 +115,38 @@ namespace Licenta.Server.Repository
             {
                 return new List<Issue>();
             }
-            return await _context.Issues.Where(p => p.IssueTypeId == issueTypeId).ToListAsync();
+            return await _context.Issues.Include(p => p.IssueStatus).Where(p => p.IssueTypeId == issueTypeId).ToListAsync();
         }
         public async Task<Issue> AddIssue(AddIssueDTO newIssue)
         {
-            if(newIssue == null)
+            if (newIssue == null)
             {
                 return null;
             }
             //serach if the issueStatus and IssueType exists
-            if(await _context.IssuesStatus.Where(p => p.Name == newIssue.IssueStatus).FirstOrDefaultAsync() == null)
+            if (await _context.IssuesStatus.Where(p => p.Name == newIssue.IssueStatus).FirstOrDefaultAsync() == null)
             {
                 _context.IssuesStatus.Add(new IssueStatus
                 {
                     Name = newIssue.IssueStatus
                 });
             }
-            if(await _context.IssueTypes.Where(p => p.Name == newIssue.IssueType).FirstOrDefaultAsync() == null)
+            if (await _context.IssueTypes.Where(p => p.Name == newIssue.IssueType).FirstOrDefaultAsync() == null)
             {
                 _context.IssueTypes.Add(new IssueType
                 {
                     Name = newIssue.IssueType,
                     IconUrl = "https://www.flaticon.com/svg/static/icons/svg/3523/3523063.svg"
-                   
+
 
                 });
                 _context.SaveChanges();
             }
+            if (await _context.Users.Where(p => p.Email == newIssue.AssigneEmail).FirstOrDefaultAsync() == null)
+            {
+                return null;
+            }
+            var parentIssue = await _context.Issues.Where(p => p.Id == newIssue.ParentIssueId).FirstOrDefaultAsync();
             var issue = new Issue
             {
                 Id = Guid.NewGuid(),
@@ -151,16 +160,22 @@ namespace Licenta.Server.Repository
                 SprintId = newIssue.SprintId,
                 AssigneeId = await _context.Users.Where(p => p.Email == newIssue.AssigneEmail).Select(p => p.Id).FirstOrDefaultAsync(),
                 ReporterId = await _context.Users.Where(p => p.Email == newIssue.ReporterEmail).Select(p => p.Id).FirstOrDefaultAsync(),
-                IssueStatusId =  await _context.IssuesStatus.Where(p => p.Name == newIssue.IssueStatus).Select(p => p.Id).FirstOrDefaultAsync(),
+                IssueStatusId = await _context.IssuesStatus.Where(p => p.Name == newIssue.IssueStatus).Select(p => p.Id).FirstOrDefaultAsync(),
                 IssueTypeId = await _context.IssueTypes.Where(p => p.Name == newIssue.IssueType).Select(p => p.Id).FirstOrDefaultAsync(),
                 Project = await _context.Projects.Where(p => p.ProjectId == newIssue.ProjectId).FirstOrDefaultAsync(),
                 Sprint = await _context.Sprints.Where(p => p.Id == newIssue.SprintId).FirstOrDefaultAsync(),
                 Assignee = await _context.Users.Where(p => p.Email == newIssue.AssigneEmail).FirstOrDefaultAsync(),
                 Reporter = await _context.Users.Where(p => p.Email == newIssue.ReporterEmail).FirstOrDefaultAsync(),
                 IssueStatus = await _context.IssuesStatus.Where(p => p.Name == newIssue.IssueStatus).FirstOrDefaultAsync(),
-                IssueType = await _context.IssueTypes.Where(p => p.Name == newIssue.IssueType).FirstOrDefaultAsync()
+                IssueType = await _context.IssueTypes.Where(p => p.Name == newIssue.IssueType).FirstOrDefaultAsync(),
+
             };
             //add the issue to the project too
+            if (parentIssue != null)
+            {
+                issue.ParentIssue = parentIssue;
+                issue.ParentIssueId = newIssue.ParentIssueId;
+            }
             var project= await _context.Projects.Where(p => p.ProjectId == newIssue.ProjectId).FirstOrDefaultAsync();
             var sprint= await _context.Sprints.Where(p => p.Id == newIssue.SprintId).FirstOrDefaultAsync();
             if(project.Issues == null)
@@ -333,20 +348,21 @@ namespace Licenta.Server.Repository
             {
                 return new List<Issue>();
             }
-            return await _context.Issues.Where(p => p.ProjectId == projectId && p.SprintId == sprintId).ToListAsync();
+            return await _context.Issues.Include(p => p.IssueStatus).Where(p => p.ProjectId == projectId && p.SprintId == sprintId).ToListAsync();
         }
         public async Task<List<Issue>> GetAllChildIssues(Guid parentId)
         {
-            var parentIssue = await _context.Issues.Include(p=>p.ChildIssues).Where(p => p.Id == parentId).FirstOrDefaultAsync();
+            var parentIssue = await _context.Issues.Include(p => p.IssueStatus).Include(p=>p.IssueType).Include(p=>p.ChildIssues).Where(p => p.Id == parentId).FirstOrDefaultAsync();
             if (parentIssue == null)
             {
                 return new List<Issue>();
             }
+            var childIssues = parentIssue.ChildIssues;
             return parentIssue.ChildIssues;
         }
         public async Task<Issue> GetParentIssue(Guid childId)
         {
-            var childIssue = await _context.Issues.Where(p => p.Id == childId).FirstOrDefaultAsync();
+            var childIssue = await _context.Issues.Include(p => p.IssueStatus).Where(p => p.Id == childId).FirstOrDefaultAsync();
             if (childIssue == null)
             {
                 return null;
@@ -371,7 +387,7 @@ namespace Licenta.Server.Repository
             var childIssue = await _context.Issues.Where(p => p.Id == childId).FirstOrDefaultAsync();
             if (parentIssue != null && childIssue != null)
             {
-                parentIssue.ChildIssues.Remove(childIssue);
+               parentIssue.ChildIssues.Remove(childIssue);
                 childIssue.ParentIssue = null;
                 childIssue.ParentIssueId = null;
                 await _context.SaveChangesAsync();

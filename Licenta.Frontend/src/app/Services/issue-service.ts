@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { Issue } from '../Models/Issue';
 import { AddIssueDTO } from '../Models/DTO/AddIssueDTO';
 
@@ -50,6 +50,30 @@ export class IssueService {
     return this.http.post(url, updatedIssue).pipe(
       map((response) => {
         return response as AddIssueDTO;
+      })
+    );
+  }
+  addChildIssue(parentId: string, childId: string): Observable<void> {
+    const url = `${this.baseUrl}/Issue/AddChildIssue/${parentId}/${childId}`;
+    return this.http.post<void>(url, {}).pipe(
+      map(() => {
+        console.log('Child issue added successfully');
+      }),
+      catchError((error) => {
+        console.error('Error adding child issue', error);
+        return throwError(error);
+      })
+    );
+  }
+  removeChildIssue(parentId: string, childId: string): Observable<void> {
+    const url = `${this.baseUrl}/Issue/RemoveChildIssue/${parentId}/${childId}`;
+    return this.http.patch<void>(url, {}).pipe(
+      map(() => {
+        console.log('Child issue removed successfully');
+      }),
+      catchError((error) => {
+        console.error('Error removing child issue', error);
+        return throwError(error);
       })
     );
   }

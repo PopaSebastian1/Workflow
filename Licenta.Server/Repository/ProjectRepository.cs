@@ -119,7 +119,15 @@ namespace Licenta.Server.Repository
         public async Task RemoveMemberFromProject(string email, Guid projectId)
         {
             var user = await _context.Users.Where(u => u.Email == email).FirstOrDefaultAsync();
-            var project = await _context.Projects.Where(p => p.ProjectId == projectId).FirstOrDefaultAsync();
+            var project = await _context.Projects
+        .Include(p => p.Issues)
+            .ThenInclude(i => i.Assignee)
+        .Include(p => p.Issues)
+            .ThenInclude(i => i.Reporter)
+        .Include(p=>p.Members)
+        .Where(p => p.ProjectId == projectId)
+        .FirstOrDefaultAsync();
+
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -128,6 +136,7 @@ namespace Licenta.Server.Repository
             {
                 throw new ArgumentNullException(nameof(project));
             }
+            project.Issues.Where(i => i.AssigneeId == user.Id).ToList().ForEach(i => { i.Assignee = i.Reporter; i.AssigneeId = i.ReporterId; });
             project.Members.Remove(user);
             await _context.SaveChangesAsync();
         }
@@ -334,6 +343,42 @@ namespace Licenta.Server.Repository
             }
             user.AdministratorProjects.Remove(project);
             project.Administrators.Remove(user);
+            await _context.SaveChangesAsync();
+        }
+        public async Task RemoveSprintFromProject(Guid projectId, Guid sprintId)
+        {
+            var project = await _context.Projects.Include(p => p.Sprints).Where(p => p.ProjectId == projectId).FirstOrDefaultAsync();
+            if (project == null)
+            {
+                throw new ArgumentNullException(nameof(project));
+            }
+            var sprint = await _context.Sprints.Include(p=>p.Issues).Where(p => p.Id == sprintId).FirstOrDefaultAsync();
+            if (sprint == null)
+            {
+                throw new ArgumentNullException(nameof(sprint));
+            }
+            var issues = sprint.Issues;
+            var sprints = project.Sprints;
+            //get the next sprint or the previous one
+            Sprint newSprint;
+            if(sprints.Count>1)
+            {
+               int index = sprints.IndexOf(sprint);
+                if(sprints.Count>index+1)
+                {
+                    newSprint = sprints[index + 1];
+                }
+                else
+                {
+                    newSprint = sprints[index - 1];
+                }
+                foreach(var issue in issues)
+                {
+                    issue.Sprint = newSprint;
+                    issue.SprintId = newSprint.Id;
+                }
+            }
+            project.Sprints.Remove(sprint);
             await _context.SaveChangesAsync();
         }
     }

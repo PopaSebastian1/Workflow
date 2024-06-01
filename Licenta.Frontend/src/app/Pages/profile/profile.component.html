@@ -1,99 +1,78 @@
-Sidenav
-<div class="sidenav">
-    <div class="profile">
-        <img src="{{user?.profilePicture}}" alt="" width="200" height="200">
+<div class="container">
+  <div class="profile-card">
+    <div class="card mt-5">
+      <div class="card-header text-center">
+        <h4>User Profile</h4>
+      </div>
+      <div class="card-body">
+        <div class="text-center mb-4">
+          <img [src]="userProfile && userProfile.profilePicture || ''" class="img-fluid rounded-circle" alt="Profile Picture">
+        </div>
+        <div class="dropdown text-center mt-3" *ngIf="loggedUser?.id === userProfile?.id">
+          <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <mat-icon>photo_camera</mat-icon>
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="#">Image 1</a>
+            <a class="dropdown-item" href="#">Image 2</a>
+            <a class="dropdown-item" href="#">Image 3</a>
+          </div>
+        </div>
+        <div class="mb-3">
+          <p><strong>Name:</strong> {{ userProfile && userProfile.fullName || '' }}</p>
+          <p><strong>Email:</strong> {{ userProfile && userProfile.email || '' }}</p>
+          <p><strong>First Name:</strong> {{ userProfile && userProfile.firstName || '' }}</p>
+          <p><strong>Last Name:</strong> {{ userProfile && userProfile.lastName || '' }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tables-section">
+    <div class="mt-5">
+      <h2>Projects</h2>
+      
+      <mat-table [dataSource]="userProjects" class="mat-elevation-z8">
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef> Project Name </mat-header-cell>
+          <mat-cell *matCellDef="let project"> {{project.name}} </mat-cell>
+        </ng-container>
 
-        <div class="name">
-            {{user?.fullName}}
-        </div>
-        <div class="job">
-            {{getRoleString(user?.role)}}
-        </div>
+        <ng-container matColumnDef="description">
+          <mat-header-cell *matHeaderCellDef> Project Description </mat-header-cell>
+          <mat-cell *matCellDef="let project"> {{project.description}} </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumnsProjects"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumnsProjects;"></mat-row>
+      </mat-table>
     </div>
 
-</div>
-
-<div class="main">
-    <h2>IDENTITY</h2>
-    <div class="card">
-        <div class="card-body">
-            <i class="fa fa-pen fa-xs edit"></i>
-            <table>
-                <tbody>
-                    <tr>
-                        <td>First Name</td>
-                        <td>:</td>
-                        <td>{{user?.firstName}}</td>
-                    </tr>
-                    <tr>
-                        <td>Last Name</td>
-                        <td>:</td>
-                        <td>{{user?.lastName}}</td>
-                    </tr>
-                    <tr>
-                        <td>Full Name</td>
-                        <td>:</td>
-                        <td>{{user?.fullName}}</td>
-                    </tr>
-                    <tr>
-                        <td>Email</td>
-                        <td>:</td>
-                        <td>{{user?.email}}</td>
-                    </tr>
-                    <tr>
-                        <td>Role</td>
-                        <td>:</td>
-                        <td>{{getRoleString(user?.role)}}</td>
-                    </tr>
-                    <tr>
-                        <td>Skill </td>
-                        <td>:</td>
-                        <td>
-                            <div *ngFor="let skill of user?.skills">
-                                {{skill.name}}
-                              </div>
-                        </td>
-                    </tr>
-
-                </tbody>
-            </table>
-        </div>
+    <div class="project-issues" *ngFor="let project of commonProjects; let i = index">
+      <div class="title-section">
+        <h2>Issues for {{ project.name }}</h2>
+        <button class="toggle-button" (click)="toggleTable(i)">
+          <mat-icon>{{ tableVisible[i] ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+      </div>
+      <hr />
+      <div *ngIf="tableVisible[i]">
+        <mat-table [dataSource]="projectIssueDataSources[i]" class="mat-elevation-z8">
+          <ng-container matColumnDef="title">
+            <mat-header-cell *matHeaderCellDef> Issue Title </mat-header-cell>
+            <mat-cell *matCellDef="let issue"> {{issue.title}} </mat-cell>
+          </ng-container>
+          
+          <ng-container matColumnDef="description">
+            <mat-header-cell *matHeaderCellDef> Issue Description </mat-header-cell>
+            <mat-cell *matCellDef="let issue"> {{issue.description}} </mat-cell>
+          </ng-container>
+          
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+        <mat-paginator class="my-paginator" [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
+      </div>
     </div>
+  </div>
 
-    <h2>SOCIAL MEDIA</h2>
-    <div class="card">
-        <div class="card-body">
-            <i class="fa fa-pen fa-xs edit"></i>
-            <div class="social-media">
-                <span class="fa-stack fa-sm">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
-                </span>
-                <span class="fa-stack fa-sm">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
-                </span>
-                <span class="fa-stack fa-sm">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    <i class="fab fa-instagram fa-stack-1x fa-inverse"></i>
-                </span>
-                <span class="fa-stack fa-sm">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    <i class="fab fa-invision fa-stack-1x fa-inverse"></i>
-                </span>
-                <span class="fa-stack fa-sm">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
-                </span>
-                <span class="fa-stack fa-sm">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    <i class="fab fa-whatsapp fa-stack-1x fa-inverse"></i>
-                </span>
-                <span class="fa-stack fa-sm">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    <i class="fab fa-snapchat fa-stack-1x fa-inverse"></i>
-                </span>
-            </div>
-        </div>
-    </div>
 </div>

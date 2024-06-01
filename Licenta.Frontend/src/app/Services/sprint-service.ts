@@ -28,5 +28,13 @@ export class SprintService {
         return response as Issue[];
       })
     );
-}
+  }
+  updateSprintStatus(sprintId:string, status:number) {
+    const url = `${this.baseUrl}/Sprint/UpdateSprintStatus?Id=${sprintId}&status=${status}`;
+    return this.http.patch(url, {}).pipe(
+      map((response) => {
+        return response;
+      })
+    );
+  }
 }

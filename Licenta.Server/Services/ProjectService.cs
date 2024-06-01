@@ -88,5 +88,9 @@ namespace Licenta.Server.Services
         {
             await _unitOfWork.ProjectsRepository.RemoveAdministratorFromProject(projectId, email);
         }
+        public async Task RemoveSprintFromProject(Guid projectId, Guid sprintId)
+        {
+            await _unitOfWork.ProjectsRepository.RemoveSprintFromProject(projectId, sprintId);
+        }
     } 
 }

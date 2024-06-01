@@ -121,10 +121,23 @@ export class ProjectService {
       })
     );
   }
+  addAdminstratorToProject(email: string): Observable<any> {
+    const projectId = this.getSelectedProject()?.projectId;
+    const url = `${this.projectApiUrl}/AddAdministratorToProject?projectId=${projectId}&email=${email}`;
+    return this.http.post(url, null).pipe(
+      map((response) => {
+        return response;
+      })
+    );
+  }
 
-  removeMemberFromProject(email: string): Observable<any> {
-    const projectId = 'c24fdea7-dccf-4011-8227-172f27e135a9';
+  removeMemberFromProject(email:string): Observable<any> {
+    const projectId = this.getSelectedProject()?.projectId;
     const url = `${this.projectApiUrl}/RemoveUserFromProject?projectId=${projectId}&email=${email}`;
-    return this.http.get(url);
+    return this.http.put(url, null).pipe(
+      map((response) => {
+        return response;
+      })
+    );
   }
 }

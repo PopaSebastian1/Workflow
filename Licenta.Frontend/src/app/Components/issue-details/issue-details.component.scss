@@ -10,7 +10,7 @@
     display: flex;
     flex-direction: column;
     margin: auto;
-    margin-top: 10px;
+    margin-top: 3em;
     padding: 20px;
     border: 2px solid #aaaaaa;
     border-radius: 5px;
@@ -164,4 +164,23 @@
   .save-button button mat-icon {
     vertical-align: middle;
     margin-right: 8px;
+  }
+  .add-issue-button {
+    background: none;
+    border: none;
+    color: #007BFF; /* Blue */
+    cursor: pointer;
+    transition: color 0.4s ease;
+  }
+  
+  .add-issue-button:hover {
+    color: #0056b3;
+  }
+  
+  .add-issue-button:active {
+    color: #003d80;
+  }
+  
+  .add-issue-button mat-icon {
+    font-size: 24px; /* Adjust icon size if needed */
   }

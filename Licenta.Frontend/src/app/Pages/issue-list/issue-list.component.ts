@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Issue } from '../../Models/Issue';
 import { EMPTY, Observable } from 'rxjs';
 import { IssueService } from '../../Services/issue-service';
@@ -6,12 +6,18 @@ import { Project } from '../../Models/Project';
 import { ProjectService } from '../../Services/project-service';
 import { IssueStatus } from '../../Models/IssueStatus';
 import { IssueType } from '../../Models/IssueType';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 @Component({
   selector: 'app-issue-list',
   templateUrl: './issue-list.component.html',
   styleUrls: ['./issue-list.component.scss'],
 })
-export class IssueListComponent implements OnInit {
+export class IssueListComponent implements OnInit, AfterViewInit {
+removeIssue(arg0: any) {
+throw new Error('Method not implemented.');
+}
+
 applyFilter(arg0: string) {
 throw new Error('Method not implemented.');
 }
@@ -23,9 +29,12 @@ throw new Error('Method not implemented.');
     'createdOn',
     'reporter',
     'assignee',
+    'actions',
   ];
   showCreateProject: boolean = false;
-  
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  dataSource: MatTableDataSource<Issue> = new MatTableDataSource<Issue>();
+
   issues: Observable<Issue[]> = EMPTY;
   selectedProject: Project | null = null;
   getTypeColor(type: IssueType) {
@@ -60,9 +69,26 @@ throw new Error('Method not implemented.');
   closeCreateProject() {
     this.showCreateProject = !this.showCreateProject;
   }
-
+  newIssueAdded()
+  {
+    if(this.selectedProject){
+    this.issues = this.issueService.getIssuesByProjectId(
+      this.selectedProject.projectId.toString()
+    );
+    this.issues.subscribe((data) => {
+      this.dataSource.data = data;
+      this.dataSource.paginator = this.paginator;
+    });
+  }
+  }
   openAddIssue() {
   this.showCreateProject = true;
+  }
+  ngAfterViewInit() {
+    this.issues.subscribe((data) => {
+      this.dataSource.data = data;
+      this.dataSource.paginator = this.paginator;
+    });
   }
   ngOnInit(): void {
     this.setSelectedProject();
@@ -70,6 +96,7 @@ throw new Error('Method not implemented.');
       this.issues = this.issueService.getIssuesByProjectId(
         this.selectedProject.projectId.toString()
       );
+ 
       console.log(this.issues);
     }
   }

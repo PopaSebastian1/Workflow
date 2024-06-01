@@ -18,6 +18,8 @@ import { ProjectService } from '../../Services/project-service';
 export class AddIssueComponent implements OnInit {
   @Output() closeModalEvent = new EventEmitter();
   @Input() selectedProject!: Project;
+  @Output() submitEvent= new EventEmitter();
+  @Input() parentIssue: Issue | undefined;
   users: User[] = [];
   sprintsProject: Sprint[] | null = null;
   issue?: AddIssueDTO;
@@ -46,7 +48,7 @@ export class AddIssueComponent implements OnInit {
 
   onSubmit() {
     this.issue = {
-      Id: '',
+      Id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
       Title: this.title,
       Description: this.description,
       CreatedAt: new Date(this.createdAt),
@@ -55,10 +57,12 @@ export class AddIssueComponent implements OnInit {
       LoggedTime: Number(this.loggedTime),
       ProjectId: this.selectedProject.projectId,
       SprintId: this.sprintId,
-      AssigneEmail: this.assigneEmail,
-      ReporterEmail: this.reporterEmail,
+      AssigneEmail: this.users.find((user) => user.fullName === this.assigneEmail)?.email || '',
+      ReporterEmail: this.users.find((user)=> user.fullName === this.reporterEmail)?.email || '',
       IssueStatus: this.issueStatus,
       IssueType: this.issueType,
+      ParentIssueId: this.parentIssue?.id || '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+
     };
 
     this.issueService.addIssue(this.issue).subscribe({
@@ -69,6 +73,7 @@ export class AddIssueComponent implements OnInit {
         console.log(err);
       },
     });
+    this.submitEvent.emit();
 
     this.close();
   }
