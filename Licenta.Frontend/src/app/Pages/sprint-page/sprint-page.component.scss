@@ -15,16 +15,19 @@
 }
 .container {
     max-width: 100%; /* Extends container to full width of the screen */
-    margin: 0; /* Removes auto margin to start from the left edge */
+  margin: 0; /* Removes auto margin to start from the left edge */
     padding: 0 15px; /* Adds padding to prevent content from touching the screen edges */
 }
 .view-mode-button {
-    margin-left: 10px;
+    margin-top: auto;
+    margin-bottom: auto;
     color: #007BFF; /* Primary color for the icon */
     cursor: pointer; /* Changes cursor to pointer on hover */
     font-size: 28px; /* Increases font size for the icon */
     transition: color 0.3s ease, transform 0.3s ease, background-color 0.3s ease; /* Smooth transitions */
     align-self: flex-end; /* Aligns the button to the end of the flex container */
+    justify-content: center;
+    display: flex;
 }
 
 .view-mode-button:hover {
@@ -53,12 +56,14 @@
 .controls button {
     background-color: transparent; /* Makes the button background transparent */
     color: #007BFF; /* Primary color for the icon */
-    padding: 8px; /* Adds some padding around the icon */
     border: none; /* Removes default border */
     cursor: pointer; /* Changes cursor to pointer on hover */
     font-size: 28px; /* Increases font size for the icon */
     transition: color 0.3s ease, transform 0.3s ease, background-color 0.3s ease; /* Smooth transitions */
     border-radius: 50%; /* Makes the button circular */
+    align-items: center;
+    justify-content: center;
+    display: flex;
 }
 
 .controls button:hover {
@@ -66,3 +71,23 @@
     background-color: rgba(0, 123, 255, 0.1); /* Adds a light background on hover */
     transform: scale(1.1); /* Slightly increase the size of the button on hover */
 }
+.add-sprint {
+    background-color: #007bff; /* Bootstrap primary blue */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    display: flex; // Enable flexbox for alignment
+    align-items: center; // Vertically center icon and text
+  
+    &::before {
+      font-weight: 900;
+      margin-right: 5px;  /* Space between icon and text */
+    }
+  
+    &:hover {
+      background-color: #0056b3; // Slightly darker blue on hover
+    }
+  }

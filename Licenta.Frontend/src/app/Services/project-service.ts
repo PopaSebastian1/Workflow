@@ -8,7 +8,8 @@ import { Project } from '../Models/Project';
 import { AddProjectDto } from '../Models/DTO/AddProjectDto';
 import { Observable } from 'rxjs';
 import { Sprint } from '../Models/Sprint';
-
+import { IssueLabel } from '../Models/IssueLabel';
+import { PriorityLevel } from '../Models/PriorityLevel';
 @Injectable({
   providedIn: 'root',
 })
@@ -139,5 +140,76 @@ export class ProjectService {
         return response;
       })
     );
+  }
+  getAllLabelsForProject(): Observable<IssueLabel[]> {
+    const projectId = this.getSelectedProject()?.projectId;
+    const url = `${this.projectApiUrl}/getLabelsForProject?projectId=${projectId}`;
+    return this.http.get<IssueLabel[]>(url).pipe(
+      map((response) => {
+        return response as IssueLabel[];
+      })
+    );
+  }
+  removeIssueFromProject(issueId: string): Observable<any> {
+    const projectId = this.getSelectedProject()?.projectId;
+    const url = `${this.projectApiUrl}/removeIssueFromProject?projectId=${projectId}&issueId=${issueId}`;
+    return this.http.delete(url).pipe(
+      map((response) => {
+        console.log("Repsonse" + response);
+        return response;
+      })
+    );
+  }
+  addLabelToProject(label: IssueLabel): Observable<any> {
+    const projectId = this.getSelectedProject()?.projectId;
+    const url = `${this.projectApiUrl}/addLabelToProject?projectId=${projectId}`;
+    return this.http.post(url, label).pipe(
+      map((response) => {
+        return response;
+      })
+    );
+  }
+  removeAdminstratorFromProject(email: string): Observable<any> {
+    const projectId = this.getSelectedProject()?.projectId;
+    const url = `${this.projectApiUrl}/RemoveAdministratorFromProject?projectId=${projectId}&email=${email}`;
+    return this.http.delete(url).pipe(
+      map((response) => {
+        return response;
+      })
+    );
+  }
+  getPriorities():string[]
+  {
+    var priorities = [
+      {
+        value: PriorityLevel.Low,
+        name: 'Low',
+        color: 'green',
+        icon: 'arrow_downward',
+        id:0
+      },
+      {
+        value: PriorityLevel.Medium,
+        name: 'Medium',
+        color: '#DAA520',
+        icon: 'arrow_right_alt',
+        id:1
+      },
+      {
+        value: PriorityLevel.High,
+        name: 'High',
+        color: 'orange',
+        icon: 'arrow_upward',
+        id:2
+      },
+      {
+        value: PriorityLevel.Critical,
+        name: 'Critical',
+        color: 'red',
+        icon: 'error',
+        id:3
+      },
+    ];
+    return priorities.map(x=>x.id.toString())
   }
 }

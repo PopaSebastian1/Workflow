@@ -1,0 +1,39 @@
+<div class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Add Sprint</h2>
+        <button class="close" (click)="close()">&times;</button>
+      </div>
+      <form (ngSubmit)="onSubmit()" class="form-grid">
+        <div class="form-column">
+          <label for="name">Name:</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            [(ngModel)]="name"
+            placeholder="Enter sprint name"
+          />
+          <label for="startDate">Start Date:</label>
+          <input
+            type="datetime-local"
+            id="startDate"
+            name="startDate"
+            [(ngModel)]="startDate"
+            placeholder="Select start date and time"
+          />
+          <label for="endDate">End Date:</label>
+          <input
+            type="datetime-local"
+            id="endDate"
+            name="endDate"
+            [(ngModel)]="endDate"
+            placeholder="Select end date and time"
+          />
+        </div>
+        <div class="form-footer">
+          <button type="submit">Add Sprint</button>
+        </div>
+      </form>
+    </div>
+  </div>

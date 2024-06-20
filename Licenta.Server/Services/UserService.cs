@@ -85,9 +85,9 @@ namespace Licenta.Server.Services
             };
             return userDTO;
         }
-        public async Task<User?> UpdateUserAsync(string email, string firstName, string lastName)
+        public async Task<User?> UpdateUserAsync(string email, string firstName, string lastName, string profilePicture)
         {
-            return await _unitOfWork.UserRepository.UpdateUser(email, firstName, lastName);
+            return await _unitOfWork.UserRepository.UpdateUser(email, firstName, lastName, profilePicture);
         }
         public async Task<Project?> JoinProject(string email, string key)
         {
@@ -105,6 +105,10 @@ namespace Licenta.Server.Services
         public async Task<List<Issue>> GetAllUserIssuesByProjectId(Guid projectId, string email)
         {
             return await _unitOfWork.UserRepository.GetAllUserIssuesByProjectId(projectId, email);
+        }
+        public async Task UpdateUserProfilePicture(Guid guid, string profilePicture)
+        {
+            await _unitOfWork.UserRepository.UpdateProfilePhoto(guid, profilePicture);
         }
     }
 }

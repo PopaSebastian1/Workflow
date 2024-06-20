@@ -19,12 +19,12 @@ namespace Licenta.Server.DataLayer.Models
         public List<Issue> Issues { get; set; }
         public List<User> Members { get; set; }
         public List<IssueStatus> IssueStatuses { get; set; }
+        public List<IssueLabel> IssueLabels { get; set; }
         public List<User> Administrators { get; set; }
         public Project()
         {
             Sprints = new List<Sprint>();
             Members = new List<User>();
         }
-
     }
 }

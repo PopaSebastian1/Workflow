@@ -137,7 +137,7 @@ ngAfterViewInit(): void {
           canvas.height = 400;
       }
 
-      const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'];
+      const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF','#E91E63', '#00BCD4', '#4CAF50', '#FFEB3B', '#3F51B5', '#9C27B0', '#F44336', '#03A9F4', '#8BC34A', '#FF9800'];
       const backgroundColor = this.data[index].map((_, i) => colors[i % colors.length]);
 
       const config: ChartConfiguration = {

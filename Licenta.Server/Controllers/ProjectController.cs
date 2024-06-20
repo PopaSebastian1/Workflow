@@ -138,5 +138,29 @@ namespace Licenta.Server.Controllers
             await _projectService.RemoveSprintFromProject(projectId, sprintId);
             return Ok();
         }
+        [HttpPost("addLabelToProject")]
+        public async Task<IActionResult> AddLabelToProject(Guid projectId, IssueLabel label)
+        {
+            await _projectService.AddIssueLabel(projectId, label);
+            return Ok();
+        }
+        [HttpPost("removeLabelFromProject")]
+        public async Task<IActionResult> RemoveLabelFromProject(Guid projectId, int labelId)
+        {
+            await _projectService.RemoveIssueLabel(projectId, labelId);
+            return Ok();
+        }
+        [HttpGet("getLabelsForProject")]
+        public async Task<IActionResult> GetLabelsForProject(Guid projectId)
+        {
+            var labels = await _projectService.GetIssueLabelsFromProject(projectId);
+            return Ok(labels);
+        }
+        [HttpDelete("removeIssueFromProject")]
+        public async Task<IActionResult> RemoveIssueFromProject(Guid projectId, Guid issueId)
+        {
+            await _projectService.RemoveIssueFromProject(projectId, issueId);
+            return Ok();
+        }
     }
 }

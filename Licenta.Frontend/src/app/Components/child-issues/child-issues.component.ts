@@ -5,53 +5,54 @@ import { Issue } from '../../Models/Issue';
 @Component({
   selector: 'app-child-issues',
   templateUrl: './child-issues.component.html',
-  styleUrls: ['./child-issues.component.scss']
+  styleUrls: ['./child-issues.component.scss'],
 })
-export class ChildIssuesComponent implements OnInit{
+export class ChildIssuesComponent implements OnInit {
   @Input() currentIssue?: Issue;
-  displayedColumns: string[] = ['title', 'issueStatus', 'issueType', 'assignee', 'actions'];
-  dataSource: Issue[] = [];
+  displayedColumns: string[] = [
+    'title',
+    'issueStatus',
+    'issueType',
+    'assignee',
+    'actions',
+  ];
   @Output() removeIssueEvent = new EventEmitter();
-  constructor(issueService: IssueService) {
-    
-  }
+  dataSource: Issue[] = [];
+  constructor(private issueService: IssueService) {}
   ngOnInit(): void {
     console.log(this.currentIssue?.sprint);
-    this.dataSource = this.currentIssue?.childIssues || [];
-    console.log(this.dataSource[0].sprint);
-  }
-  convertIssueStatus(nr:number)
-  {
-    if(nr==1)
-      {
-      return "To Do"
-    }
-    if(nr==2)
-      {
-        return "In Progress"
+    this.issueService.getAllChildIssues(this.currentIssue!.id).subscribe(
+      (issues) => {
+        this.dataSource = issues;
+        console.log(this.dataSource);
+      },
+      (error) => {
+        console.log(error);
       }
-      if(nr==3)
-    {
-      return "Done"
+    );
+    console.log(this.dataSource[0].assignee);
+  }
+  convertIssueStatus(nr: number) {
+    if (nr == 1) {
+      return 'To Do';
     }
-    else
-    {
-      return "Unknown"
+    if (nr == 2) {
+      return 'In Progress';
+    }
+    if (nr == 3) {
+      return 'Done';
+    } else {
+      return 'Unknown';
     }
   }
-  convertIssueType(nr:number)
-  {
-    if(nr==2)
-    {
-      return "Story"
+  convertIssueType(nr: number) {
+    if (nr == 2) {
+      return 'Story';
     }
-    if(nr==6)
-    {
-      return "Bug"
-    }
-    else
-    {
-      return "Task"
+    if (nr == 6) {
+      return 'Bug';
+    } else {
+      return 'Task';
     }
   }
   removeIssue(issueId: string) {

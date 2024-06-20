@@ -1,61 +1,132 @@
 <h1 class="page-title">Issues</h1>
 <div class="buttons-container">
-  <button class="add-task-button" (click)="openAddIssue()">Add New Task</button>
-  <div class="dropdown">
-    <button class="filter-button">Filters</button>
-    <div class="dropdown-content">
-      <button (click)="applyFilter('filter1')">Filter 1</button>
-      <button (click)="applyFilter('filter2')">Filter 2</button>
-      <button (click)="applyFilter('filter3')">Filter 3</button>
+  <button class="add-task-button" (click)="openAddIssue()">Add New Task
+    <mat-icon>add</mat-icon>
+  </button>
+  <button class="export-to-csv" (click)="exportData()">Export data <mat-icon>file_download</mat-icon></button>
+  <div class="filter-buttons">
+    <div class="dropdown">
+     
     </div>
+  <div class="dropdown">
+    <button  [matMenuTriggerFor]="filterMenu" class="filter-button" >
+      Priorities
+      <mat-icon>filter_list</mat-icon> 
+  </button>
+    <mat-menu #filterMenu="matMenu">
+      <mat-checkbox class="mat-primary" (change)="applyFilter($event, 0)" checked>Low</mat-checkbox>
+      <mat-checkbox class="mat-primary" (change)="applyFilter($event, 1)" checked>Medium</mat-checkbox>
+      <mat-checkbox class="mat-primary" (change)="applyFilter($event, 2)" checked>High</mat-checkbox>
+      <mat-checkbox class="mat-primary"  (change)="applyFilter($event, 3)" checked>Critical</mat-checkbox>
+    </mat-menu>
   </div>
+  <div class="dropdown">
+    <button  [matMenuTriggerFor]="typeFilterMenu" class="filter-button">
+      Type
+      <mat-icon>filter_list</mat-icon> 
+    </button>
+    <mat-menu #typeFilterMenu="matMenu"  class="vertical-menu">
+      <mat-checkbox class="mat-primary" (change)="applyTypeFilter($event,'2')" checked>Story</mat-checkbox>
+      <mat-checkbox class="mat-primary" (change)="applyTypeFilter($event,'6')" checked>Bug</mat-checkbox>
+      <mat-checkbox class="mat-primary" (change)="applyTypeFilter($event,'7')" checked>Task</mat-checkbox>
+    </mat-menu>
+  </div>
+  <div class="dropdown">
+    <button  [matMenuTriggerFor]="statusFilterMenu" class="filter-button">
+      Status
+      <mat-icon>filter_list</mat-icon> 
+    </button>
+    <mat-menu #statusFilterMenu="matMenu">
+      <mat-checkbox class="mat-primary" (change)="applyStatusFilter($event, '1')" checked>To Do</mat-checkbox>
+      <mat-checkbox class="mat-primary" (change)="applyStatusFilter($event, '2')" checked>Done</mat-checkbox>
+      <mat-checkbox class="mat-primary" (change)="applyStatusFilter($event, '3')" checked>In Progress</mat-checkbox>
+    </mat-menu>
+  </div>
+<div class="dropdown">
+  <button [matMenuTriggerFor]="labelFilterMenu" class="filter-button">
+    Label
+    <mat-icon>filter_list</mat-icon> 
+  </button>
+  <mat-menu #labelFilterMenu="matMenu">
+    <mat-checkbox class="mat-primary" *ngFor="let label of labels" (change)="applyFilterLabel($event, label.id)" checked>
+      {{label.name}}
+    </mat-checkbox>
+  </mat-menu>
+</div>
+</div>
+
 </div>
 <div class="mat-table-container">
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort (matSortChange)="announceSortChange($event)">
     <!-- Number Column -->
     <ng-container matColumnDef="number">
-      <th mat-header-cell *matHeaderCellDef>No.</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">No.</th>
       <td mat-cell *matCellDef="let issue; let i = index">{{ i + 1 }}</td>
     </ng-container>
     <!-- Title Column -->
+    <!-- Title Column -->
     <ng-container matColumnDef="title">
-      <th mat-header-cell *matHeaderCellDef>Title</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
       <td mat-cell *matCellDef="let issue">
-        <a [routerLink]="['/issuedetails', issue.id]">{{ issue.title }}</a>
+        <div class="issue-card-title">
+          <a [routerLink]="['/issuedetails', issue.id]">{{ issue.title }}</a>
+          <span *ngIf="issue.labelId !=0" 
+                [style.backgroundColor]="getLabelById(issue.labelId)?.color" 
+                style="color: white; padding: 2px 5px; border-radius: 5px; margin-left: 10px;">
+            {{ getLabelById(issue.labelId)?.name }}
+          </span>
+        </div>
       </td>
     </ng-container>
-    <!-- Status Column -->
+   <!-- Priority Column -->
+<ng-container matColumnDef="priority">
+  <th mat-header-cell *matHeaderCellDef mat-sort-header>Priority</th>
+  <td mat-cell *matCellDef="let issue">
+    <div *ngIf="issue.priority === 0" style="color: #2196F3;">
+      <span>Low</span>
+    </div>
+    <div *ngIf="issue.priority === 1" style="color: #4CAF50;">
+      <span>Medium</span>
+    </div>
+    <div *ngIf="issue.priority === 2" style="color: #FFC107;">
+      <span>High</span>
+    </div>
+    <div *ngIf="issue.priority === 3" style="color: #F44336;">
+      <span>Critical</span>
+    </div>
+  </td>
+</ng-container>
     <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef>Status</th>
+      <th mat-header-cell *matHeaderCellDef  mat-sort-header >Status</th>
       <td mat-cell *matCellDef="let issue">{{ issue.issueStatus.name }}</td>
     </ng-container>
     <!-- Type Column -->
     <ng-container matColumnDef="type">
-      <th mat-header-cell *matHeaderCellDef>Type</th>
+      <th mat-header-cell *matHeaderCellDef  mat-sort-header>Type</th>
       <td mat-cell *matCellDef="let issue">{{ issue.issueType.name }}</td>
     </ng-container>
     <!-- Created on Column -->
     <ng-container matColumnDef="createdOn">
-      <th mat-header-cell *matHeaderCellDef>Created On</th>
+      <th mat-header-cell *matHeaderCellDef  mat-sort-header>Created On</th>
       <td mat-cell *matCellDef="let issue">
         {{ issue.createdAt | date : "dd MMMM yyyy" }}
       </td>
     </ng-container>
     <!-- Reporter Column -->
-    <ng-container matColumnDef="reporter">
-      <th mat-header-cell *matHeaderCellDef>Reporter</th>
-      <td mat-cell *matCellDef="let issue">{{ issue.reporter.fullName }}</td>
+    <ng-container matColumnDef="dueDate">
+      <th mat-header-cell *matHeaderCellDef  mat-sort-header >Due Date</th>
+      <td mat-cell *matCellDef="let issue">{{ issue.dueDate | date : "dd MMMM yyyy" }}</td>
     </ng-container>
     <!-- Assignee Column -->
     <ng-container matColumnDef="assignee">
-      <th mat-header-cell *matHeaderCellDef>Assignee</th>
+      <th mat-header-cell *matHeaderCellDef  mat-sort-header>Assignee</th>
       <td mat-cell *matCellDef="let issue">{{ issue.assignee.fullName }}</td>
     </ng-container>
     <!-- Actions Column -->
     <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <th mat-header-cell *matHeaderCellDef>Delete/th>
       <td mat-cell *matCellDef="let issue">
-        <button  mat-icon-button color="warn" (click)="removeIssue(issue.id)">
+        <button mat-icon-button color="warn" (click)="removeIssue(issue.id)">
           <mat-icon>delete</mat-icon>
         </button>
       </td>
@@ -68,6 +139,6 @@
 <app-add-issue
   *ngIf="showCreateProject"
   (closeModalEvent)="closeCreateProject()"
-  (submitEvent)="newIssueAdded()"
+  (submitEvent)="newIssueAdded($event)"
   [selectedProject]="selectedProject!"
 ></app-add-issue>

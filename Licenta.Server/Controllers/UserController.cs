@@ -37,9 +37,9 @@ namespace Licenta.Server.Controllers
             return Ok(await _userService.GetUserAsync(email));
         }
         [HttpPost("updateUser")]
-        public async Task<IActionResult> UpdateUser(string email, string firstName, string lastName)
+        public async Task<IActionResult> UpdateUser(string email, string firstName, string lastName, string profilePicture)
         {
-            return Ok(await _userService.UpdateUserAsync(email, firstName, lastName));
+            return Ok(await _userService.UpdateUserAsync(email, firstName, lastName, profilePicture));
         }
         [HttpPost("JoinProject")]
         public async Task<IActionResult> JoinProject(string email, string key)
@@ -60,7 +60,15 @@ namespace Licenta.Server.Controllers
         public async Task<IActionResult> GetAllUserIssuesByProject(Guid Id, string email)
         {
             return Ok(await _userService.GetAllUserIssuesByProjectId(Id, email));
-        }
 
+        }
+        [AllowAnonymous]
+        [HttpPost("updateUserPhoto")]
+        public async Task<IActionResult> UpdateUserPhoto(Guid id, string photo)
+        
+        {
+            await _userService.UpdateUserProfilePicture(id, photo);
+            return Ok();
+        }
     }
 }

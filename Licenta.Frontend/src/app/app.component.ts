@@ -7,13 +7,16 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'angular';
+  title = 'Workflow';
+  icon= 'assets/W.png';
   isLoginPage:boolean = false;
+  isRegisterParge:boolean = false;
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
       this.isLoginPage = this.activatedRoute.snapshot.firstChild?.url[0].path === 'login';
+      this.isRegisterParge = this.activatedRoute.snapshot.firstChild?.url[0].path ==='register';
     });
   }
 }

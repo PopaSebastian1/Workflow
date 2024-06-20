@@ -21,11 +21,12 @@ export class IssueService {
       })
     );
   }
-  addIssue(issue: AddIssueDTO): Observable<AddIssueDTO> {
+  addIssue(issue: AddIssueDTO): Observable<Issue[]> {
+    console.log(issue);
     const url = 'https://localhost:7261/Issue/AddIssue';
     return this.http.post(url, issue).pipe(
       map((response) => {
-        return response as AddIssueDTO;
+        return response as Issue[];
       })
     );
   }
@@ -76,5 +77,9 @@ export class IssueService {
         return throwError(error);
       })
     );
+  }
+  exportIssuesToCsv(ids: string[]): Observable<Blob> {
+    const url = `${this.baseUrl}/Issue/ExportIssuesToCsv`;
+    return this.http.post(url, ids, { responseType: 'blob' });
   }
 }

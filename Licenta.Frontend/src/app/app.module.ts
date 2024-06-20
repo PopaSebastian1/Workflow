@@ -43,7 +43,10 @@ import { StatisticsComponent } from './Components/statistics/statistics.componen
 import { DashboardComponent } from './Pages/dashboard/dashboard.component';
 import { TableComponent } from './Components/table/table.component';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-
+import { AddSprintComponent } from './Components/add-sprint/add-sprint.component';
+import { AddLabelComponent } from './Components/add-label/add-label.component';
+import { MatSortModule } from '@angular/material/sort';
+import { ConfirmDeleteDialogComponent } from './Components/confirm-delete-dialog/confirm-delete-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -68,6 +71,9 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
     StatisticsComponent,
     DashboardComponent,
     TableComponent,
+    AddSprintComponent,
+    AddLabelComponent,
+    ConfirmDeleteDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -90,6 +96,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
     MatCheckboxModule,
     MatButtonModule,
     BrowserAnimationsModule,
+    MatSortModule
   ],
   providers: [
     [DatePipe],

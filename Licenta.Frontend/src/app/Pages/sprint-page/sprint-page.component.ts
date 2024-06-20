@@ -18,6 +18,7 @@ export class SprintPageComponent implements OnInit {
   isGridView = false;
   filterOption = 'all';
   sortOption = 'startDate';
+  isAddSprintModalOpen = false;
 
   constructor(
     private projectService: ProjectService,
@@ -37,7 +38,13 @@ export class SprintPageComponent implements OnInit {
         });
     }
   }
+  openAddSprintModal(): void {
+    this.isAddSprintModalOpen = true;
+  }
 
+  closeAddSprintModal(): void {
+    this.isAddSprintModalOpen = false;
+  }
   toggleViewMode() {
     this.isGridView = !this.isGridView;
   }

@@ -1,0 +1,101 @@
+/* The SCSS code would be identical to the one in add-sprint.component.scss */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    .modal-content {
+      max-width: 30%;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+  
+        h2 {
+          margin: 0;
+        }
+  
+        .close {
+          font-size: 25px;
+          cursor: pointer;
+          background-color: transparent;
+          border: none;
+          padding: 0;
+          margin: 0;
+        }
+      }
+    }
+  }
+  
+  .form-grid {
+    display: grid;
+    gap: 15px;
+  
+    .form-column {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+  
+      label {
+        font-weight: bold;
+      }
+      input[type="color"] {
+        padding: 0; // Remove default padding
+        border: none; // Remove default border
+        width: 50px; // Adjust width as needed
+        height: 30px; // Adjust height as needed
+        cursor: pointer; // Indicate interactivity
+        border-radius: 4px; // Optional, for a rounded look
+        appearance: none; // Remove browser-specific styling
+        
+        &::-webkit-color-swatch-wrapper { 
+          padding: 0; // Remove extra padding in WebKit browsers
+          border: 2px solid #ccc; // Add a visible border (customizable)
+          border-radius: 4px;
+        }
+  
+        &::-webkit-color-swatch { 
+          border: none; // Remove the inner border
+          border-radius: 4px;
+        }
+      }
+  
+      input {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+    }
+  
+    .form-footer {
+      display: flex;
+      justify-content: center;
+    }
+  }
+  
+  button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  
+    &:hover {
+      background-color: #0056b3;
+    }
+  }

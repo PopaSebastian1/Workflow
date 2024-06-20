@@ -78,6 +78,14 @@ export class DataService {
       })
     );
   }
+
+  updateProfilePhoto(id: string, photo: string) {
+    // Construieste URL-ul cu parametrii de interogare
+    const url = `https://localhost:7261/User/updateUserPhoto?id=${id}&photo=${photo}`;
+
+    // Trimite cererea POST la URL
+    return this.http.post(url, {});
+}
   logOut()
   {
     if (localStorage.getItem('user')) {

@@ -67,7 +67,6 @@ export class LoginComponent {
         }
         });
       }
-      // console.log(this.loginForm.value);
     }
 }
 goToRegister() {

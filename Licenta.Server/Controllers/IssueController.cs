@@ -58,14 +58,19 @@ namespace Licenta.Server.Controllers
         [HttpPost("AddIssue")]
         public async Task<IActionResult> AddIssue(AddIssueDTO issue)
         {
-            await _issueService.AddIssue(issue);
-            return Ok("The issue was added successfully");
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState); 
+            }
+
+            return Ok(await _issueService.AddIssue(issue));
         }
         [HttpPost("UpdateIssue")]
         public async Task<IActionResult> UpdateIssue(AddIssueDTO issue)
         {
             await _issueService.UpdateIssue(issue);
             return Ok();
+
         }
         [HttpPost("DeleteIssue/{id}")]
         public async Task<IActionResult> DeleteIssue(Guid id)
@@ -176,7 +181,19 @@ namespace Licenta.Server.Controllers
         {
             return Ok(await _issueService.GetAllChildIssueByParentId(parentId));
         }
-
-
+        [HttpPost("ExportIssuesToCsv")]
+        public async Task<IActionResult> ExportIssuesToCsv([FromBody] List<Guid> ids)
+        {
+            var filePath = Path.GetTempFileName() + ".csv";
+            await _issueService.ExportIssuesToCsv(ids, filePath);
+            var memory = new MemoryStream();
+            using (var stream = new FileStream(filePath, FileMode.Open))
+            {
+                await stream.CopyToAsync(memory);
+            }
+            System.IO.File.Delete(filePath); // dele
+            memory.Position = 0;
+            return File(memory, "text/csv", Path.GetFileName(filePath));
+        }
     }
 }

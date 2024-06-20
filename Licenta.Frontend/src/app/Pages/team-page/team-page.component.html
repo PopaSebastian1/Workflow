@@ -1,6 +1,10 @@
 <div class="team-page">
     <h1 class="title">Our Team</h1>
-    <div class="team-container">
-        <app-team></app-team>
+    <div class="copy" *ngIf="isAdmin">
+        <div *ngIf="copySuccess">Project key copied successfully!</div>
+      <button (click)="copyProjectKey()" ><i class="fa fa-key" ></i></button>
     </div>
-</div>
+    <div class="team-container">
+      <app-team></app-team>
+    </div>
+  </div>

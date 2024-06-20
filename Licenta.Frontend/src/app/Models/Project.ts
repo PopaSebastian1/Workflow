@@ -1,4 +1,5 @@
 import { Issue } from "./Issue";
+import { IssueLabel } from "./IssueLabel";
 import { Sprint } from "./Sprint";
 import { User } from "./User";
 
@@ -13,4 +14,6 @@ export interface Project {
     sprints: Sprint[];
     issues: Issue[];
     members: User[];
+    issueLabels: IssueLabel[];
+    key: string;
 }

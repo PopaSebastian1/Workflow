@@ -8,15 +8,14 @@
         <div class="text-center mb-4">
           <img [src]="userProfile && userProfile.profilePicture || ''" class="img-fluid rounded-circle" alt="Profile Picture">
         </div>
-        <div class="dropdown text-center mt-3" *ngIf="loggedUser?.id === userProfile?.id">
-          <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <mat-icon>photo_camera</mat-icon>
-          </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="#">Image 1</a>
-            <a class="dropdown-item" href="#">Image 2</a>
-            <a class="dropdown-item" href="#">Image 3</a>
-          </div>
+        <div class="dropdown">
+          <button mat-button [matMenuTriggerFor]="menu">Select profile photo</button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item *ngFor="let image of images" (click)="selectProfilePhoto(image.url)">
+              <img [src]="image.url" alt="{{image.name}}" width="50" height="50">
+              <span>{{image.name}}</span>
+            </button>
+          </mat-menu>
         </div>
         <div class="mb-3">
           <p><strong>Name:</strong> {{ userProfile && userProfile.fullName || '' }}</p>
@@ -55,11 +54,13 @@
         </button>
       </div>
       <hr />
-      <div *ngIf="tableVisible[i]">
+      <div [ngStyle]="{ display: tableVisible[i] ? 'block' : 'none' }">
         <mat-table [dataSource]="projectIssueDataSources[i]" class="mat-elevation-z8">
           <ng-container matColumnDef="title">
             <mat-header-cell *matHeaderCellDef> Issue Title </mat-header-cell>
-            <mat-cell *matCellDef="let issue"> {{issue.title}} </mat-cell>
+            <mat-cell *matCellDef="let issue"> 
+              <a [routerLink]="['/issuedetails', issue.id]">{{ issue.title }}</a> 
+            </mat-cell>
           </ng-container>
           
           <ng-container matColumnDef="description">
@@ -74,5 +75,4 @@
       </div>
     </div>
   </div>
-
 </div>

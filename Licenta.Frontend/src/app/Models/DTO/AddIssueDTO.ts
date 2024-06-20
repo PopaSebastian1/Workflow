@@ -1,3 +1,4 @@
+import { PriorityLevel } from "../PriorityLevel";
 
 export class AddIssueDTO
 {
@@ -15,6 +16,8 @@ export class AddIssueDTO
     IssueStatus: string;
     IssueType: string; 
     ParentIssueId: string;
+    LabelId: number;
+    Priority:PriorityLevel;
     constructor()
     {
         this.Id = '';
@@ -31,5 +34,7 @@ export class AddIssueDTO
         this.IssueStatus = '';
         this.IssueType = '';
         this.ParentIssueId = '';
+        this.Priority=PriorityLevel.Low;
+        this.LabelId=0;
     }
 }

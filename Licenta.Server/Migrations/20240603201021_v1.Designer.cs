@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Licenta.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240302122946_v5")]
-    partial class v5
+    [Migration("20240603201021_v1")]
+    partial class v1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,21 @@ namespace Licenta.Server.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("IssueStatusProject", b =>
+                {
+                    b.Property<int>("IssueStatusesId")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("ProjectsProjectId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("IssueStatusesId", "ProjectsProjectId");
+
+                    b.HasIndex("ProjectsProjectId");
+
+                    b.ToTable("ProjectIssueStatuses", (string)null);
+                });
 
             modelBuilder.Entity("Licenta.Server.DataLayer.Models.Comment", b =>
                 {
@@ -81,8 +96,17 @@ namespace Licenta.Server.Migrations
                     b.Property<int>("IssueTypeId")
                         .HasColumnType("integer");
 
+                    b.Property<int?>("LabelId")
+                        .HasColumnType("integer");
+
                     b.Property<float>("LoggedTime")
                         .HasColumnType("real");
+
+                    b.Property<Guid?>("ParentIssueId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("ProjectId")
                         .HasColumnType("uuid");
@@ -105,6 +129,10 @@ namespace Licenta.Server.Migrations
 
                     b.HasIndex("IssueTypeId");
 
+                    b.HasIndex("LabelId");
+
+                    b.HasIndex("ParentIssueId");
+
                     b.HasIndex("ProjectId");
 
                     b.HasIndex("ReporterId");
@@ -112,6 +140,32 @@ namespace Licenta.Server.Migrations
                     b.HasIndex("SprintId");
 
                     b.ToTable("Issues");
+                });
+
+            modelBuilder.Entity("Licenta.Server.DataLayer.Models.IssueLabel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Labels");
                 });
 
             modelBuilder.Entity("Licenta.Server.DataLayer.Models.IssueStatus", b =>
@@ -169,6 +223,10 @@ namespace Licenta.Server.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -223,6 +281,9 @@ namespace Licenta.Server.Migrations
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -470,6 +531,36 @@ namespace Licenta.Server.Migrations
                     b.ToTable("UserProjects", (string)null);
                 });
 
+            modelBuilder.Entity("ProjectUser1", b =>
+                {
+                    b.Property<Guid>("AdministratorProjectsProjectId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AdministratorsId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("AdministratorProjectsProjectId", "AdministratorsId");
+
+                    b.HasIndex("AdministratorsId");
+
+                    b.ToTable("ProjectAdministrators", (string)null);
+                });
+
+            modelBuilder.Entity("IssueStatusProject", b =>
+                {
+                    b.HasOne("Licenta.Server.DataLayer.Models.IssueStatus", null)
+                        .WithMany()
+                        .HasForeignKey("IssueStatusesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Licenta.Server.DataLayer.Models.Project", null)
+                        .WithMany()
+                        .HasForeignKey("ProjectsProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Licenta.Server.DataLayer.Models.Comment", b =>
                 {
                     b.HasOne("Licenta.Server.DataLayer.Models.Issue", null)
@@ -505,6 +596,14 @@ namespace Licenta.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Licenta.Server.DataLayer.Models.IssueLabel", "Label")
+                        .WithMany()
+                        .HasForeignKey("LabelId");
+
+                    b.HasOne("Licenta.Server.DataLayer.Models.Issue", "ParentIssue")
+                        .WithMany("ChildIssues")
+                        .HasForeignKey("ParentIssueId");
+
                     b.HasOne("Licenta.Server.DataLayer.Models.Project", "Project")
                         .WithMany("Issues")
                         .HasForeignKey("ProjectId")
@@ -529,11 +628,24 @@ namespace Licenta.Server.Migrations
 
                     b.Navigation("IssueType");
 
+                    b.Navigation("Label");
+
+                    b.Navigation("ParentIssue");
+
                     b.Navigation("Project");
 
                     b.Navigation("Reporter");
 
                     b.Navigation("Sprint");
+                });
+
+            modelBuilder.Entity("Licenta.Server.DataLayer.Models.IssueLabel", b =>
+                {
+                    b.HasOne("Licenta.Server.DataLayer.Models.Project", null)
+                        .WithMany("IssueLabels")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Licenta.Server.DataLayer.Models.Project", b =>
@@ -624,13 +736,32 @@ namespace Licenta.Server.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ProjectUser1", b =>
+                {
+                    b.HasOne("Licenta.Server.DataLayer.Models.Project", null)
+                        .WithMany()
+                        .HasForeignKey("AdministratorProjectsProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Licenta.Server.DataLayer.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("AdministratorsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Licenta.Server.DataLayer.Models.Issue", b =>
                 {
+                    b.Navigation("ChildIssues");
+
                     b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("Licenta.Server.DataLayer.Models.Project", b =>
                 {
+                    b.Navigation("IssueLabels");
+
                     b.Navigation("Issues");
 
                     b.Navigation("Sprints");

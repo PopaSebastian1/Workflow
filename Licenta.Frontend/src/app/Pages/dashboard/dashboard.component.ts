@@ -13,6 +13,7 @@ import { DataService } from '../../Services/data-service';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
+
   issues: Issue[] = [];
   project: Project | null = null;
   sprints: Sprint[] = [];
@@ -23,7 +24,7 @@ export class DashboardComponent implements OnInit {
   chartTypes: string[] = [];
   isDropdownOpen = false;
   titles: string[] = [];
-
+  showStatistics: boolean = false;
   constructor(
     private projectService: ProjectService,
     private issueService: IssueService,
@@ -47,7 +48,6 @@ export class DashboardComponent implements OnInit {
         this.userIssues=this.issues.filter((issue) => {
           return issue.assignee.email === this.currentUser?.email;
         });
-        this.updateChartDataByStatus();
       });
     }
     if (
@@ -146,29 +146,29 @@ export class DashboardComponent implements OnInit {
   }
   updateChartDataByResolutionTime(): void {
     const counts = {
-      '<1 day': 0,
-      '1-3 days': 0,
-      '3-7 days': 0,
-      '>7 days': 0,
+      '<4 hours': 0,
+      '4-8 hours': 0,
+      '8-12 hours': 0,
+      '>12 hours': 0,
     };
   
     this.issues.forEach((issue) => {
-      const resolutionTime = issue.estimatedTime/8;
-      if (resolutionTime < 1) {
-        counts['<1 day']++;
-      } else if (resolutionTime <= 3) {
-        counts['1-3 days']++;
-      } else if (resolutionTime <= 7) {
-        counts['3-7 days']++;
+      const resolutionTime = issue.estimatedTime; // Assuming estimatedTime is in hours
+      if (resolutionTime < 4) {
+        counts['<4 hours']++;
+      } else if (resolutionTime <= 8) {
+        counts['4-8 hours']++;
+      } else if (resolutionTime <= 12) {
+        counts['8-12 hours']++;
       } else {
-        counts['>7 days']++;
+        counts['>12 hours']++;
       }
     });
   
-    this.pieChartsData.push([counts['<1 day'], counts['1-3 days'], counts['3-7 days'], counts['>7 days']]);
-    this.pieChartsLabels.push(['<1 day', '1-3 days', '3-7 days', '>7 days']);
+    this.pieChartsData.push([counts['<4 hours'], counts['4-8 hours'], counts['8-12 hours'], counts['>12 hours']]);
+    this.pieChartsLabels.push(['<4 hours', '4-8 hours', '8-12 hours', '>12 hours']);
     this.chartTypes.push('bar');
-    this.titles.push('Issues by Resolution Time');
+    this.titles.push('Issues by Resolution Time in Hours');
   }
   
   
@@ -194,16 +194,73 @@ export class DashboardComponent implements OnInit {
     this.chartTypes.push('pie');
     this.titles.push('Performance by Estimated Time');
   }
-
-
+  updateChartDataByPriority(): void {
+    const counts = {
+      Critical: 0,
+      High: 0,
+      Low: 0,
+      Medium: 0,
+    };
+    this.issues.forEach((issue) => {
+      switch (issue.priority) {
+        case 3:
+          counts.Critical++;
+          break;
+        case 2:
+          counts.High++;
+          break;
+        case 0:
+          counts.Low++;
+          break;
+        case 1:
+          counts.Medium++;
+          break;
+      }
+    });
+    this.pieChartsData.push([counts.Critical, counts.High, counts.Low, counts.Medium]);
+    this.pieChartsLabels.push(['Critical', 'High', 'Low', 'Medium']);
+    this.chartTypes.push('pie');
+    this.titles.push('Issues by Priority');
+  }
+  updateChartByLabel(): void {
+    this.projectService.getAllLabelsForProject().subscribe((labels) => {
+      // Inițializează obiectul de contorizare cu un identificator implicit pentru "None"
+      const labelCounts = labels.reduce((counts, label) => {
+        counts[label.id] = 0;
+        return counts;
+      }, { 'none': 0 } as { [key: string]: number });
+  
+      // Iterează prin toate problemele
+      this.issues.forEach((issue) => {
+        const labelId = issue.labelId || 'none'; // Utilizează 'none' dacă issue.labelId este falsy
+        if (labelCounts.hasOwnProperty(labelId)) {
+          labelCounts[labelId]++;
+        }
+      });
+  
+      // Map label IDs to label names, including "None"
+      const labelNames = labels.reduce((acc, label) => {
+        acc[label.id] = label.name;
+        return acc;
+      }, { 'none': 'None' } as { [key: string]: string });
+  
+      // Actualizează datele pentru grafic
+      this.pieChartsLabels.push(Object.keys(labelCounts).map(key => labelNames[key]));
+      this.pieChartsData.push(Object.values(labelCounts));
+      this.chartTypes.push('pie');
+      this.titles.push('Issues by Label');
+    });
+  }
   onRemoveChart(index:number)
   {
-    if (this.chartTypes[index] === 'pie') {
+    if (this.chartTypes[index]) {
       this.pieChartsData.splice(index, 1);
       this.pieChartsLabels.splice(index, 1);
       this.chartTypes.splice(index, 1);
       this.titles.splice(index, 1);
     }
   }
-  
+  toggleStatistics(): void {
+    this.showStatistics = !this.showStatistics;
+  }
 }

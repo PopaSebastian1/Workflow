@@ -11,7 +11,9 @@ import { Sprint } from '../Models/Sprint';
 export class SprintService {
   private baseUrl = 'https://localhost:7261/api';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  
+  }
 
   getSprintsByProjectId(projectId: string): Observable<Sprint[]> {
     const url = `${this.baseUrl}/Sprint/GetSprintsByProjectId?projectId=${projectId}`;
@@ -34,6 +36,14 @@ export class SprintService {
     return this.http.patch(url, {}).pipe(
       map((response) => {
         return response;
+      })
+    );
+  }
+  addSprint(sprint: Sprint): Observable<Sprint> {
+    const url = `${this.baseUrl}/Sprint/AddSprint`;
+    return this.http.post(url, sprint).pipe(
+      map((response) => {
+        return response as Sprint;
       })
     );
   }

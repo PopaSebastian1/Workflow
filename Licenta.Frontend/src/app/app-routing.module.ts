@@ -22,7 +22,7 @@ const routes: Routes = [
   { path: 'issuedetails/:id', component: IssueDetailsComponent },
   { path: 'team', component: TeamPageComponent },
   { path: 'sprint', component: SprintPageComponent },
-  { path: 'dashboard', component: DashboardComponent },
+  { path: 'dashboard', component: DashboardComponent, title: 'Dashboard'},
   // other routes...
 ];
 

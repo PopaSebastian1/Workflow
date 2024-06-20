@@ -1,35 +1,35 @@
 <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-    <!-- Title Column -->
-    <ng-container matColumnDef="title">
-        <mat-header-cell *matHeaderCellDef>Title</mat-header-cell>
-        <mat-cell *matCellDef="let issue">{{ issue.title }}</mat-cell>
-    </ng-container>
+  <!-- Title Column -->
+  <ng-container matColumnDef="title">
+    <mat-header-cell *matHeaderCellDef>Title</mat-header-cell>
+    <mat-cell *matCellDef="let issue">{{ issue.title }}</mat-cell>
+  </ng-container>
 
-    <!-- Status Column -->
-    <ng-container matColumnDef="issueStatus">
-        <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
-        <mat-cell *matCellDef="let issue">{{ convertIssueStatus(issue.issueStatusId)}}</mat-cell>
-    </ng-container>
+  <!-- Status Column -->
+  <ng-container matColumnDef="issueStatus">
+    <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+    <mat-cell *matCellDef="let issue">{{
+      convertIssueStatus(issue.issueStatusId)
+    }}</mat-cell>
+  </ng-container>
 
-    <!-- Type Column -->
-    <ng-container matColumnDef="issueType">
-        <mat-header-cell *matHeaderCellDef>Type</mat-header-cell>
-        <mat-cell *matCellDef="let issue of issue">{{ convertIssueType(issue.issueTypeId)}}</mat-cell>
-    </ng-container>
-
-    <!-- Sprint Column -->
-
-
-    <!-- Assignee Column -->
-    <ng-container matColumnDef="assignee">
-        <mat-header-cell *matHeaderCellDef>Assignee</mat-header-cell>
-        <mat-cell *matCellDef="let issue">
-          <img [src]="issue.assignee?.profilePicture" alt="Assignee Image" />
-          {{ issue.assignee?.fullName }}
-        </mat-cell>
-    </ng-container>
-<!-- Actions Column -->
-<ng-container matColumnDef="actions">
+  <!-- Type Column -->
+  <ng-container matColumnDef="issueType">
+    <mat-header-cell *matHeaderCellDef>Type</mat-header-cell>
+    <mat-cell *matCellDef="let issue">{{
+      convertIssueType(issue.issueTypeId)
+    }}</mat-cell>
+  </ng-container>
+  <!-- Assignee Column -->
+  <ng-container matColumnDef="assignee">
+    <mat-header-cell *matHeaderCellDef>Assignee</mat-header-cell>
+    <mat-cell *matCellDef="let issue">
+      <img [src]="issue.assignee?.profilePicture" alt="Assignee Image" />
+      {{ issue.assignee?.fullName }}
+    </mat-cell>
+  </ng-container>
+  <!-- Actions Column -->
+  <ng-container matColumnDef="actions">
     <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
     <mat-cell *matCellDef="let issue">
       <button mat-icon-button color="warn" (click)="removeIssue(issue.id)">
@@ -37,6 +37,6 @@
       </button>
     </mat-cell>
   </ng-container>
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
 </mat-table>

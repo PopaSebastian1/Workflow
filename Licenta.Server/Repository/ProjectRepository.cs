@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 using System.Text.Json;
 using System.Security.Policy;
 using RandomStringUtils;
+using System.Reflection.Emit;
 namespace Licenta.Server.Repository
 {
     public class ProjectRepository
@@ -125,8 +126,20 @@ namespace Licenta.Server.Repository
         .Include(p => p.Issues)
             .ThenInclude(i => i.Reporter)
         .Include(p=>p.Members)
+        .Include(p=>p.Administrators)
+        .Include(p=>p.Owner)
         .Where(p => p.ProjectId == projectId)
         .FirstOrDefaultAsync();
+            if(project.OwnerId==user.Id)
+            {
+                throw new Exception("The owner of the project cannot be removed from the project");
+            }
+            if(!project.Administrators.Contains(user))
+            {
+                throw new Exception("The user is not an adminstrator of the project");
+            }
+           
+            var owner = await _context.Users.Where(u => u.Id == project.OwnerId).FirstOrDefaultAsync();
 
             if (user == null)
             {
@@ -136,7 +149,19 @@ namespace Licenta.Server.Repository
             {
                 throw new ArgumentNullException(nameof(project));
             }
-            project.Issues.Where(i => i.AssigneeId == user.Id).ToList().ForEach(i => { i.Assignee = i.Reporter; i.AssigneeId = i.ReporterId; });
+            project.Issues.Where(i => i.AssigneeId == user.Id || i.ReporterId == user.Id).ToList().ForEach(i =>
+            {
+                if (i.AssigneeId == user.Id)
+                {
+                    i.Assignee = owner;
+                    i.AssigneeId = owner.Id;
+                }
+                if (i.ReporterId == user.Id)
+                {
+                    i.Reporter = owner;
+                    i.ReporterId = owner.Id;
+                }
+            });
             project.Members.Remove(user);
             await _context.SaveChangesAsync();
         }
@@ -149,11 +174,9 @@ namespace Licenta.Server.Repository
             }
            return project.Members;
         }
-        //add a new project into the database
         public async Task<Project> AddProject(CreateProjectDTO newProject, Guid ownerId)
         {
             var user = await _context.Users.Where(p => p.Id == ownerId).FirstOrDefaultAsync();
-            //generate a random 8 character string
             string key=RandomStringUtils.RandomStringUtils.RandomAlphanumeric(12);
 
             var project = new Project
@@ -165,10 +188,13 @@ namespace Licenta.Server.Repository
                 EndDate = newProject.EndDate.ToUniversalTime(),
                 OwnerId = ownerId,
                 Owner = user,
-                Key = key
+                Key = key,
+                Administrators = new List<User>()
+                
                 
             };
             project.Owner = user;
+            project.Administrators.Add(user);
             List<Sprint> sprints = new List<Sprint>();
             List<User> members = new List<User>();
             members.Add(user);
@@ -380,6 +406,56 @@ namespace Licenta.Server.Repository
             }
             project.Sprints.Remove(sprint);
             await _context.SaveChangesAsync();
+        }
+        public async Task AddIssueLabel(Guid projectId, IssueLabel label)
+        {
+            var project = await _context.Projects.Include(p => p.IssueLabels).Where(p => p.ProjectId == projectId).FirstOrDefaultAsync();
+            if (project == null)
+            {
+                throw new ArgumentNullException(nameof(project));
+            }
+            label.Id = 0;
+            project.IssueLabels.Add(label);
+            label.ProjectId = projectId;
+            _context.Labels.Add(label);
+            await _context.SaveChangesAsync();
+        }
+        public async Task RemoveIssueLabel(Guid projectId, int labelId)
+        {
+            var project = await _context.Projects.Include(p => p.IssueLabels).Where(p => p.ProjectId == projectId).FirstOrDefaultAsync();
+            if (project == null)
+            {
+                throw new ArgumentNullException(nameof(project));
+            }
+            var label = await _context.Labels.Where(p => p.Id == labelId).FirstOrDefaultAsync();
+            if (label == null)
+            {
+                throw new ArgumentNullException(nameof(label));
+            }
+            project.IssueLabels.Remove(label);
+            label.ProjectId = Guid.Empty;
+            _context.Labels.Remove(label);
+            await _context.SaveChangesAsync();
+        }
+        public async Task<List<IssueLabel>> GetAllLabelsForProject(Guid projectId)
+        {
+            return await _context.Projects.Include(p => p.IssueLabels).Where(p => p.ProjectId == projectId).Select(p => p.IssueLabels).FirstOrDefaultAsync();
+        }
+        public async Task RemoveIssueFromProject(Guid projectId, Guid issueId)
+        {
+            var project = await _context.Projects.Include(p => p.Issues).Where(p => p.ProjectId == projectId).FirstOrDefaultAsync();
+            var issue = await _context.Issues.Where(p => p.Id == issueId).FirstOrDefaultAsync();
+            if(project==null)
+            {
+                throw new ArgumentNullException(nameof(project));
+            }
+            if(issue==null)
+            {
+                throw new ArgumentNullException(nameof(issue));
+            }
+            project.Issues.Remove(issue);
+            _context.Issues.Remove(issue);
+            _context.SaveChangesAsync();
         }
     }
 }

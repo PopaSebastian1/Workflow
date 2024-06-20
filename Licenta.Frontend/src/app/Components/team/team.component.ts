@@ -27,6 +27,14 @@ export class TeamComponent implements OnInit {
   toggleAdminStatus(user: User) {
     if (this.isAdmin(user)) {
       this.admins = this.admins.filter(admin => admin.id !== user.id);
+      this.projectService.removeAdminstratorFromProject(user.email).subscribe(() => {
+        this.projectService.getAllMembers().subscribe((users) => {
+          this.users = users;
+        });
+        this.projectService.getAllAdministratorsForProject().subscribe((admins) => {
+          this.admins = admins;
+        });
+      });
     } else {
       this.projectService.addAdminstratorToProject(user.email).subscribe(() => {
         this.projectService.getAllMembers().subscribe((users) => {

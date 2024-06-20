@@ -1,43 +1,58 @@
 <div class="forms">
+  <h1 class="title" style="color: #3498db; font-family: 'Comic Sans MS', cursive, sans-serif;">Workflow</h1>
+  
   <div class="form-content">
-    <div class="title">Register</div>
+    <h2 style="color: #3498db; font-family: 'Comic Sans MS', cursive, sans-serif;">Register</h2>
     <form [formGroup]="registerForm" (ngSubmit)="onRegister($event)">
       <div class="input-boxes">
         <div class="input-box">
+          <input formControlName="email" type="email" placeholder="Enter your email" required />
           <i class="fas fa-envelope"></i>
-          <input
-            formControlName="email"
-            type="text"
-            placeholder="Enter your username"
-            required
-          />
+        </div>
+        <div *ngIf="registerForm.controls['email'].invalid && registerForm.controls['email'].touched" class="error-message">
+          Please enter a valid email.
         </div>
         <div class="input-box">
-          <i class="fas fa-envelope"></i>
-          <input
-            formControlName="firstName"
-            type="text"
-            placeholder="Enter your First Name"
-            required
-          />
+          <input formControlName="firstName" type="text" placeholder="Enter your First Name" required />
+          <i class="fas fa-user"></i>
+        </div>
+        <div *ngIf="registerForm.controls['firstName'].invalid && registerForm.controls['firstName'].touched" class="error-message">
+          First name is required.
         </div>
         <div class="input-box">
-          <i class="fas fa-envelope"></i>
-          <input
-            formControlName="lastName"
-            type="text"
-            placeholder="Enter your Last Name"
-            required
-          />
+          <input formControlName="lastName" type="text" placeholder="Enter your Last Name" required />
+          <i class="fas fa-user"></i>
+        </div>
+        <div *ngIf="registerForm.controls['lastName'].invalid && registerForm.controls['lastName'].touched" class="error-message">
+          Last name is required.
+        </div>
+        <div class="dropdown input-box">
+          <div class="profile-photo-selection">
+            <div class="selected-image" *ngIf="profilePicture">
+              <img [src]="profilePicture" alt="Selected Profile Photo">
+            </div>
+            <mat-button mat-button [matMenuTriggerFor]="menu" >
+             Select Profile Photo
+            </mat-button>
+          </div>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item *ngFor="let image of images" (click)="selectProfilePhoto(image.url)">
+              <img [src]="image.url" alt="{{image.name}}" width="50" height="50">
+              <span>{{image.name}}</span>
+            </button>
+          </mat-menu>
         </div>
         <div class="input-box">
+          <input type="password" formControlName="password" placeholder="Password" />
           <i class="fas fa-lock"></i>
-          <input
-            formControlName="password"
-            type="password"
-            placeholder="Enter your password"
-            required
-          />
+        </div>
+        <div class="password-requirements" *ngIf="registerForm.get('password')!.touched">
+          <ul>
+            <li [class.valid-requirement]="hasLengthRequirement">Must be at least 8 characters</li>
+            <li [class.valid-requirement]="hasUpperCaseRequirement">Must contain an uppercase letter</li>
+            <li [class.valid-requirement]="hasNumericRequirement">Must contain a number</li>
+            <li [class.valid-requirement]="hasSpecialCharacterRequirement">Must contain a special character</li>
+          </ul>
         </div>
         <div class="button input-box">
           <input type="submit" value="Register" />

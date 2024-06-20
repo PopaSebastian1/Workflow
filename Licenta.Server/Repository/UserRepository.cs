@@ -59,7 +59,7 @@ public class UserRepository
     {
         return await _context.Users.Where(user => user.Id == id).FirstOrDefaultAsync();
     }
-    public async Task<User?> UpdateUser(string email, string firstName, string lastName)
+    public async Task<User?> UpdateUser(string email, string firstName, string lastName, string profilePicture)
     {
         var user = await _context.Users.Where(user => user.Email == email).FirstOrDefaultAsync();
         if (user == null)
@@ -68,7 +68,8 @@ public class UserRepository
         }
         user.FirstName = firstName;
         user.LastName = lastName;
-        //user.ProfilePicture = profilePicture;
+        user.ProfilePicture = profilePicture;
+        _context.SaveChanges();
         return user;
     }
     public async Task<List<Project>> GetAllUserProjects(string email)
@@ -119,5 +120,16 @@ public class UserRepository
         var user= await _context.Users.Where(user => user.Id == userId).FirstOrDefaultAsync();
         var projects = await _context.Projects.Where(p => p.Members.Contains(user)).ToListAsync();
         return projects;
+    }
+    public async Task<List<Issue>> UpdateProfilePhoto(Guid userId, string profilePhoto)
+    {
+        var user = await _context.Users.Where(user => user.Id == userId).FirstOrDefaultAsync();
+        if (user == null)
+        {
+            throw new ArgumentNullException(nameof(user));
+        }
+        user.ProfilePicture = profilePhoto;
+        _context.SaveChanges();
+        return await _context.Issues.Where(i => i.Assignee.Id == userId).ToListAsync();
     }
 }

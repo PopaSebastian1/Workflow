@@ -80,7 +80,7 @@ export class HomeComponent implements OnInit {
         this.projectService
           .leaveProject(this.selectedProject.projectId)
           .subscribe(() => {
-            // Update the userProjects list after leaving the project
+            
             if (this.user && this.user.email) {
               this.userProjects = this.projectService.getUserProjectsFromApi(
                 this.user.email
@@ -100,5 +100,8 @@ export class HomeComponent implements OnInit {
         this.user.email
       );
     }
+    this.userProjects.subscribe((projects) => {
+      console.log(projects);
+    });
   }
 }

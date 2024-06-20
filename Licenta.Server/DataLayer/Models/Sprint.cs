@@ -2,6 +2,7 @@
 using Microsoft.Build.Evaluation;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Licenta.Server.DataLayer.Models
 {
@@ -13,6 +14,7 @@ namespace Licenta.Server.DataLayer.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public Guid ProjectId { get; set; }
+        [JsonIgnore]
         public virtual Project Project { get; set; }
         public List<Issue> Issues { get; set; }
 

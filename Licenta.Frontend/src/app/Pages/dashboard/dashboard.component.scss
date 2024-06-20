@@ -2,17 +2,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 4em;
+  padding: 3em;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
   min-height: calc(100vh - 40px);
   box-sizing: border-box;
   width: 100%;
 
-  h1, h2 {
-    color: #333;
-    font-family: Arial, sans-serif;
-  }
+
 
   hr {
     border: none;
@@ -20,7 +17,12 @@
     margin: 10px 0;
   }
 }
-
+  h1, h2 {
+    color: #333;
+    font-family: Arial, sans-serif;
+    margin-bottom: 10px;
+    
+  }
 .dashboard-title {
   font-size: 2.5em;
   color: #333;
@@ -37,6 +39,7 @@
   .dropdown-button {
     padding: 12px 24px;
     border: none;
+    padding-bottom: 20;
     border-radius: 5px;
     background-color: #007BFF;
     color: white;
@@ -104,5 +107,40 @@
 
 .tables-container {
   width: 100%;
-  padding: 2em;
+  padding-bottom: 2em;
+}
+
+.toggle-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  
+}
+
+button {
+  background: none;
+  border: none;
+  color: #007BFF;
+  cursor: pointer;
+  &:hover {
+    color: #0056b3;
+  }
+  i {
+    margin-right: 5px;
+  }
+}
+
+.toggle-button {
+  background: none;
+  border: none;
+  color: #007BFF;
+  cursor: pointer;
+  &:hover {
+    color: #0056b3;
+  }
+}
+.statistics
+{
+  height: auto;
 }

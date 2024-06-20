@@ -1,6 +1,8 @@
-﻿using Licenta.Server.DataLayer.Dto;
+﻿using CsvHelper;
+using Licenta.Server.DataLayer.Dto;
 using Licenta.Server.DataLayer.Models;
 using Licenta.Server.DataLayer.Utils;
+using System.Globalization;
 
 namespace Licenta.Server.Services
 {
@@ -19,9 +21,9 @@ namespace Licenta.Server.Services
         {
             return await _unitOfWork.IssueRepository.GetIssueById(id);
         }
-        public async Task<Issue> AddIssue(AddIssueDTO issue)
+        public async Task<List<Issue>> AddIssue(AddIssueDTO issue)
         {
-            return await _unitOfWork.IssueRepository.AddIssue(issue);
+            return  await _unitOfWork.IssueRepository.AddIssue(issue);
         }
 
         public async Task DeleteIssue(Guid id)
@@ -133,5 +135,17 @@ namespace Licenta.Server.Services
         {
             return await _unitOfWork.IssueRepository.GetIssuesByIssueTypeId(type);
         }
+    
+        public async Task<string> ExportIssuesToCsv(List<Guid> ids, string filePath)
+        {
+            var issues = await _unitOfWork.IssueRepository.GetIssuesByIds(ids);
+            using (var writer = new StreamWriter(filePath))
+            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            {
+                csv.WriteRecords(issues);
+            }
+            return filePath;
+        }
+
     }
 }

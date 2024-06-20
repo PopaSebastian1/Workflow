@@ -93,11 +93,17 @@ namespace Licenta.Server.Migrations
                     b.Property<int>("IssueTypeId")
                         .HasColumnType("integer");
 
+                    b.Property<int?>("LabelId")
+                        .HasColumnType("integer");
+
                     b.Property<float>("LoggedTime")
                         .HasColumnType("real");
 
                     b.Property<Guid?>("ParentIssueId")
                         .HasColumnType("uuid");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("ProjectId")
                         .HasColumnType("uuid");
@@ -120,6 +126,8 @@ namespace Licenta.Server.Migrations
 
                     b.HasIndex("IssueTypeId");
 
+                    b.HasIndex("LabelId");
+
                     b.HasIndex("ParentIssueId");
 
                     b.HasIndex("ProjectId");
@@ -129,6 +137,32 @@ namespace Licenta.Server.Migrations
                     b.HasIndex("SprintId");
 
                     b.ToTable("Issues");
+                });
+
+            modelBuilder.Entity("Licenta.Server.DataLayer.Models.IssueLabel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Labels");
                 });
 
             modelBuilder.Entity("Licenta.Server.DataLayer.Models.IssueStatus", b =>
@@ -559,6 +593,10 @@ namespace Licenta.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Licenta.Server.DataLayer.Models.IssueLabel", "Label")
+                        .WithMany()
+                        .HasForeignKey("LabelId");
+
                     b.HasOne("Licenta.Server.DataLayer.Models.Issue", "ParentIssue")
                         .WithMany("ChildIssues")
                         .HasForeignKey("ParentIssueId");
@@ -587,6 +625,8 @@ namespace Licenta.Server.Migrations
 
                     b.Navigation("IssueType");
 
+                    b.Navigation("Label");
+
                     b.Navigation("ParentIssue");
 
                     b.Navigation("Project");
@@ -594,6 +634,15 @@ namespace Licenta.Server.Migrations
                     b.Navigation("Reporter");
 
                     b.Navigation("Sprint");
+                });
+
+            modelBuilder.Entity("Licenta.Server.DataLayer.Models.IssueLabel", b =>
+                {
+                    b.HasOne("Licenta.Server.DataLayer.Models.Project", null)
+                        .WithMany("IssueLabels")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Licenta.Server.DataLayer.Models.Project", b =>
@@ -708,6 +757,8 @@ namespace Licenta.Server.Migrations
 
             modelBuilder.Entity("Licenta.Server.DataLayer.Models.Project", b =>
                 {
+                    b.Navigation("IssueLabels");
+
                     b.Navigation("Issues");
 
                     b.Navigation("Sprints");

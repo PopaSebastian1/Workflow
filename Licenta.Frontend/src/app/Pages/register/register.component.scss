@@ -1,108 +1,158 @@
-/* login.component.css */
-/* body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  } */
-$primary-color: #57b846;
-/* Use light green for secondary */
-$secondary-color: #c8e6c9;
-.forms {
+body {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  min-width: 100%;
-  background-color: #fff;
+  background-color: #f4f4f4;
+  margin: 0;
+  font-family: Arial, sans-serif;
 }
+
+.forms {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+}
+
 .form-content {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 300px;
-  padding: 20px;
+  margin: 30px;
+  max-width: 400px;
+  padding: 30px;
   background-color: #fff;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease;
-}
-
-.login-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  border-radius: 10px;
+  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.2);
 }
 
 .title {
-  font-size: 24px;
+  font-size: 64px;
   font-weight: bold;
-  color:$secondary-color;
-  font-family: "Roboto-sans", serif;
+  color: #3498db;
   margin-bottom: 20px;
+  padding: 10px;
+  font-family :'Lucida Sans', cursive;
+  text-align: center;
+  border-bottom: 2px solid #3498db;
+  
 }
 
 .input-boxes {
   width: 100%;
-  display: flex; /* Added */
-  flex-direction: column; /* Added */
-  align-items: center; /* Added */
-  font-family: "Roboto-sans", serif;
 }
 
 .input-box {
   display: flex;
   align-items: center;
   margin-bottom: 15px;
-  font-family: "Roboto-sans", serif;
-  border-color: $primary-color;
-  
-  &:focus {
-    border-color: $secondary-color;
+  position: relative;
+
+  input {
+    width: 100%;
+    padding: 10px 10px 10px 35px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+  }
+
+  i {
+    position: absolute;
+    left: 10px;
+    color: #3498db;
+  }
+
+  .error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
   }
 }
 
-.input-box i {
+.password-requirements {
+  width: 100%;
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+
+  ul {
+    padding-left: 20px;
+  }
+}
+
+.valid-requirement {
+  width: 100%;
+  display: none;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.dropdown {
+  position: relative;
+  width: 100%;
+
+  .profile-photo-selection {
+    display: flex;
+    align-items: center;
+  }
+
+  mat-button,button {
+    width: calc(100% - 70px);
+    text-align: left;
+    padding: 10px;
+    background-color: #3498db;
+    color: white;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-top: 10px;
+    margin-left: 10px;
+  }
+
+  button:hover {
+    background-color: #2980b9;
+  }
+
+  i {
+    margin-right: 10px;
+  }
+}
+
+.selected-image {
   margin-right: 10px;
-  color: $primary-color;
+
+  img {
+    border-radius: 50%;
+    border: 2px solid #3498db;
+    width: 50px;
+    height: 50px;
+  }
 }
 
-.input-box input {
-  flex-grow: 1;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid $primary-color;
-  border-color:$secondary-color;
-
-  transition: border-color 0.3s ease;
-
-  &:focus {
-    border-color:$secondary-color;
-  }
+.mat-menu-panel {
+  max-height: 200px; /* Adjust max-height according to your requirements */
+  overflow-y: auto;
 }
 
 .button input {
   width: 100%;
   padding: 10px;
-  background-color: $primary-color;
+  background-color: #3498db;
   color: white;
   cursor: pointer;
   border: none;
   border-radius: 5px;
   margin-top: 10px;
-  font-family: "Roboto-sans", serif;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: darken($primary-color, 10%);
-  }
 }
 
+.button input:hover {
+  background-color: #2980b9;
+}
 
 .text {
   text-align: center;
@@ -110,5 +160,19 @@ $secondary-color: #c8e6c9;
 }
 
 .text label {
-  color: $secondary-color; 
+  color: #3498db;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.text label:hover {
+  color: #2980b9;
+}
+h2 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #3498db;
+  margin-bottom: 20px;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  text-align: center;
 }

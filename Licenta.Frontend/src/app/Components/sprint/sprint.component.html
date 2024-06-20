@@ -22,16 +22,16 @@
             Remaining days:
             {{ sprint ? calculateRemainingDays(sprint.endDate) : "" }}
           </p>
-          <div class="status-container" *ngIf="sprint">
-            <span class="status-label">Status:</span>
-            <div class="status-select">
-              <select [(ngModel)]="sprint.status" (change)="changeSprintStatus(sprint.status)">
-                <option [ngValue]="0">Planned</option>
+<div class="status-container" *ngIf="sprint">
+     <span class="status-label">Status:</span>
+        <div class="status-select">
+         <select [(ngModel)]="sprint.status" (change)="changeSprintStatus(sprint.status)">
+             <option [ngValue]="0">Planned</option>
                 <option [ngValue]="1">Active</option>
                 <option [ngValue]="2">Completed</option>
-              </select>
-            </div>
-          </div>
+         </select>
+        </div>
+</div>
           <p class="card-text">Issues progress:</p>
           <div class="progress">
             <div

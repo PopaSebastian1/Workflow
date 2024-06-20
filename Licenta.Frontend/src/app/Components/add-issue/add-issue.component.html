@@ -69,16 +69,47 @@
         </select>
 
         <label for="assigneEmail">Assignee Email:</label>
-        <select id="assigneEmail" name="assigneEmail" [(ngModel)]="assigneEmail">
+        <select
+          id="assigneEmail"
+          name="assigneEmail"
+          [(ngModel)]="assigneEmail"
+        >
           <option *ngFor="let user of users" [value]="user.fullName">
-            <img [src]="user.profilePicture" alt="Profile Picture" width="20" height="20"> {{ user.fullName }}
+            <img
+              [src]="user.profilePicture"
+              alt="Profile Picture"
+              width="20"
+              height="20"
+            />
+            {{ user.fullName }}
           </option>
         </select>
-        
+
         <label for="reporterEmail">Reporter Email:</label>
-        <select id="reporterEmail" name="reporterEmail" [(ngModel)]="reporterEmail">
+        <select
+          id="reporterEmail"
+          name="reporterEmail"
+          [(ngModel)]="reporterEmail"
+        >
           <option *ngFor="let user of users" [value]="user.fullName">
-            <img [src]="user.profilePicture" alt="Profile Picture" width="20" height="20"> {{ user.fullName }}
+            <img
+              [src]="user.profilePicture"
+              alt="Profile Picture"
+              width="20"
+              height="20"
+            />
+            {{ user.fullName }}
+          </option>
+        </select>
+        <label for="priority">Priority:</label>
+        <select id="priority" name="priority" [(ngModel)]="selectedPriorityIndex" (ngModelChange)="priorityChange($event)">
+          <option *ngFor="let priority of priorities; let i = index" [value]="i">{{ priority.name }}</option>
+        </select>
+
+        <label for="labelId">Label:</label>
+        <select id="labelId" name="labelId" [(ngModel)]="labelId">
+          <option *ngFor="let label of labels" [value]="label.id">
+            {{ label.name }}
           </option>
         </select>
 

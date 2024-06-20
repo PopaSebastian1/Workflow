@@ -3,6 +3,45 @@
     <div class="issue-header row">
       <div class="col-md-6">
         <h2>{{ editedIssue.title }}</h2>
+        <!-- Label section -->
+        <div class="issue-subtitle">
+          <mat-form-field appearance="fill">
+            <mat-label>Label</mat-label>
+            <mat-select
+              [(ngModel)]="issue!.labelId"
+              (selectionChange)="changeIssueLabel($event)"
+            >
+              <mat-option
+                *ngFor="let label of labels"
+                [value]="label.id"
+                [style.color]="label.color"
+                >{{ label.name }}</mat-option
+              >
+              <mat-option (click)="openAddLabelDialog()">Add</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <!-- Priority section -->
+        <div class="issue-subtitle">
+          <mat-form-field appearance="fill">
+            <mat-label>Priority</mat-label>
+
+            <mat-select
+              [(ngModel)]="editedIssue.priority"
+              (selectionChange)="changeIssuePriority($event)"
+            >
+              <mat-option
+                *ngFor="let priority of priorities"
+                [value]="priority.value"
+              >
+                <mat-icon matPrefix [style.color]="priority.color">{{
+                  priority.icon
+                }}</mat-icon>
+                {{ priority.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
       </div>
       <div class="issue-dropdowns col-md-6 justify-content-end">
         <mat-form-field appearance="fill">
@@ -65,7 +104,11 @@
           </div>
           <mat-form-field appearance="fill">
             <mat-select [(ngModel)]="editedIssue.sprint.name">
-              <mat-option *ngFor="let sprint of sprints" [value]="sprint.name">{{ sprint.name }}</mat-option>
+              <mat-option
+                *ngFor="let sprint of sprints"
+                [value]="sprint.name"
+                >{{ sprint.name }}</mat-option
+              >
             </mat-select>
           </mat-form-field>
         </div>
@@ -74,9 +117,16 @@
             <mat-label>Reporter</mat-label>
           </div>
           <mat-form-field appearance="fill">
-            <mat-select [(ngModel)]="editedIssue.reporter" [compareWith]="compareUsers">
+            <mat-select
+              [(ngModel)]="editedIssue.reporter"
+              [compareWith]="compareUsers"
+            >
               <mat-option *ngFor="let user of projectUsers" [value]="user">
-                <img class="reporter-image" [src]="user.profilePicture" alt="Reporter Image" />
+                <img
+                  class="reporter-image"
+                  [src]="user.profilePicture"
+                  alt="Reporter Image"
+                />
                 {{ user.fullName }}
               </mat-option>
             </mat-select>
@@ -87,9 +137,16 @@
             <mat-label>Assignee</mat-label>
           </div>
           <mat-form-field appearance="fill">
-            <mat-select [(ngModel)]="editedIssue.assignee" [compareWith]="compareUsers">
+            <mat-select
+              [(ngModel)]="editedIssue.assignee"
+              [compareWith]="compareUsers"
+            >
               <mat-option *ngFor="let user of projectUsers" [value]="user">
-                <img class="assignee-image" [src]="user.profilePicture" alt="Assignee Image" />
+                <img
+                  class="assignee-image"
+                  [src]="user.profilePicture"
+                  alt="Assignee Image"
+                />
                 {{ user.fullName }}
               </mat-option>
             </mat-select>
@@ -124,7 +181,9 @@
             <div
               class="progress-bar"
               role="progressbar"
-              [style.width]="(editedIssue.loggedTime / editedIssue.estimatedTime) * 100 + '%'"
+              [style.width]="
+                (editedIssue.loggedTime / editedIssue.estimatedTime) * 100 + '%'
+              "
               [ngClass]="getProgressBarColor()"
             >
               {{ editedIssue.loggedTime }} / {{ editedIssue.estimatedTime }}
@@ -144,28 +203,44 @@
         <mat-label>Issue Childs</mat-label>
         <button mat-icon-button (click)="toggleTable()" class="toggle-button">
           <mat-icon aria-hidden="false" aria-label="Toggle child issues">
-            {{ showTable ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
+            {{ showTable ? "keyboard_arrow_up" : "keyboard_arrow_down" }}
           </mat-icon>
         </button>
-       
-        <button mat-icon-button (click)="showAddIssue = !showAddIssue" class="add-issue-button">
+
+        <button
+          mat-icon-button
+          (click)="showAddIssue = !showAddIssue"
+          class="add-issue-button"
+        >
           <mat-icon>add</mat-icon>
         </button>
         <mat-form-field appearance="fill">
-          <mat-select placeholder="Select existent issue" (selectionChange)="addExistingIssueAsChild($event.value)">
-            <mat-option *ngFor="let issue of allIssues" [value]="issue">{{ issue.title }}</mat-option>
+          <mat-select
+            placeholder="Select existent issue"
+            (selectionChange)="addExistingIssueAsChild($event.value)"
+          >
+            <mat-option *ngFor="let issue of allIssues" [value]="issue">{{
+              issue.title
+            }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
-      <app-add-issue *ngIf="showAddIssue"
+      <app-add-issue
+        *ngIf="showAddIssue"
         (closeModalEvent)="closeModal()"
         [parentIssue]="editedIssue"
         [selectedProject]="selectedProject!"
       ></app-add-issue>
-      <app-child-issues *ngIf="showTable" [currentIssue]="editedIssue" (removeIssueEvent)="handleRemoveIssueEvent($event)"></app-child-issues>
-    </div>
-
-
-
+      <app-child-issues
+        *ngIf="showTable"
+        [currentIssue]="editedIssue"
+        (removeIssueEvent)="handleRemoveIssueEvent($event)"
+      ></app-child-issues>
+      <app-add-label
+        *ngIf="labelMode"
+        (closeModalEvent)="closeLabel()"
+        (submitEvent)="addedLabel()"
+      ></app-add-label>
     </div>
   </div>
+</div>

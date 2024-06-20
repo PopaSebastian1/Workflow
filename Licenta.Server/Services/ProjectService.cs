@@ -92,5 +92,21 @@ namespace Licenta.Server.Services
         {
             await _unitOfWork.ProjectsRepository.RemoveSprintFromProject(projectId, sprintId);
         }
+        public async Task AddIssueLabel(Guid projectId, IssueLabel label)
+        {
+            await _unitOfWork.ProjectsRepository.AddIssueLabel(projectId, label);
+        }
+        public async Task  RemoveIssueLabel(Guid projectId, int labelId)
+        {
+            await _unitOfWork.ProjectsRepository.RemoveIssueLabel(projectId, labelId);
+        }
+        public async Task<List<IssueLabel>> GetIssueLabelsFromProject(Guid projectId)
+        {
+            return await _unitOfWork.ProjectsRepository.GetAllLabelsForProject(projectId);
+        }
+        public async Task RemoveIssueFromProject(Guid projectId, Guid issueId)
+        {
+            await _unitOfWork.ProjectsRepository.RemoveIssueFromProject(projectId, issueId);
+        }
     } 
 }

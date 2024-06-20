@@ -1,3 +1,4 @@
+import { IssueLabel } from "./IssueLabel";
 import { IssueStatus } from "./IssueStatus";
 import { IssueType } from "./IssueType";
 import { Project } from "./Project";
@@ -18,7 +19,9 @@ export interface Issue {
     reporterId: string;
     issueStatusId: number;
     issueTypeId: number;
+    labelId: number;
     parentIssueId: string | null;
+    priority:number;
     comments: Comment[];
     project: Project;
     sprint: Sprint;
@@ -26,6 +29,7 @@ export interface Issue {
     issueType: IssueType;
     assignee: User;
     reporter: User;
+    issueLabel: IssueLabel;
     parentIssue: Issue;
     childIssues: Issue[];
 

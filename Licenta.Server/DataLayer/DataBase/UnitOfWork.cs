@@ -29,7 +29,7 @@ namespace Licenta.Server.DataLayer.Utils
         public SprintRepository SprintRepository { get; }
         public ProjectRepository ProjectsRepository { get; }
         public CommentRepository CommentRepository { get; }
-
+        public IssueLabelRepository IssueLabelRepository { get; }
 
         public async Task SaveChangesAsync()
         {

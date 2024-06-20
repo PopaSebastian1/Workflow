@@ -12,7 +12,7 @@ import { ProjectService } from '../../Services/project-service';
 export class CreateProjectComponent {
   user: User | null = null;
   addProject: AddProjectDto = new AddProjectDto();
-  @Input() title: string = 'Modal Title';
+  @Input() title: string = 'Create project';
   @Output() closeModalEvent = new EventEmitter<void>();
   projectName: string = '';
   projectDescription: string = '';

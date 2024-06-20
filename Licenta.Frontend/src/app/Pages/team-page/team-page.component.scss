@@ -32,3 +32,27 @@
   .mat-checkbox.mat-checkbox-indeterminate .mat-checkbox-background {
     background-color: #3f51b5;
   }
+  button {
+    color: #3498db;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    transition-duration: 0.4s;
+
+    &:hover {
+      color:#3f51b5;
+    }
+
+    i.fa {
+      margin-right: 5px;
+    }
+  }
+.copy {
+  display: flex;
+  justify-content: flex-end;
+}

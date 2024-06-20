@@ -1,45 +1,33 @@
 .container {
-    display: flex;
-    justify-content: space-between;
-    padding-top: 4em;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 4em;
 
-    .row {
-      justify-content: flex-start;
-      margin: 0;
-    }
-
-    .col-md-6 {
-      flex: 1;
-      margin-bottom: 2em;
-    }
-  
-  
-    .row {
-      justify-content: flex-start;
-      margin: 0;
-    }
-  
-    .col-md-6 {
-      flex: 1;
-      margin-bottom: 2em;
-    }
+  .row {
+    justify-content: flex-start;
+    margin: 0;
   }
-  
+
+  .col-md-6 {
+    flex: 1;
+    margin-bottom: 2em;
+  }
+
   .profile-card {
-    flex: 0 0 25%; // Card mai mare, fixat la 25% din lățimea containerului
+    flex: 0 0 25%;
     margin-right: 2em;
-    margin-top:5em;
-  
+    margin-top: 5em;
+
     .card {
       box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.2);
       transition: 0.3s;
       border-radius: 10px;
       overflow: hidden;
-  
+
       &:hover {
         box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.3);
       }
-  
+
       .card-header {
         background-color: #007bff;
         color: white;
@@ -47,22 +35,21 @@
         align-items: center;
         justify-content: center;
         display: flex;
-        h4
-        {
+        h4 {
           padding-top: 0.3em;
-          font-size:1em;
-          align-items:center;
+          font-size: 1em;
+          align-items: center;
           justify-content: center;
           display: flex;
         }
       }
-  
+
       .card-body {
         padding: 3em;
-  
+
         .text-center {
           margin-bottom: 2em;
-  
+
           img {
             width: 150px;
             height: 150px;
@@ -71,21 +58,23 @@
             border: 5px solid #007bff;
             animation: spin 5s linear infinite;
           }
-  
-          @keyframes spin {
-            0% {
-              transform: rotate(0deg);
-            }
-            100% {
-              transform: rotate(360deg);
-            }
-          }
+
+          // @keyframes spin {
+          //   0% {
+          //     transform: rotate(0deg);
+          //   }
+          //   100% {
+          //     transform: rotate(360deg);
+          //   }
+          // }
         }
+
         .dropdown {
           display: flex;
           justify-content: center;
           align-items: center;
-        
+          position: relative;
+
           .btn {
             width: 50px;
             height: 50px;
@@ -95,26 +84,25 @@
             align-items: center;
             justify-content: center;
             font-size: 24px;
-        
-            // Elimină săgeata de la dropdown
+
             &::after {
               display: none;
             }
           }
-        
-          // Centrarea dropdown-ului
+
           .dropdown-menu {
             left: 50% !important;
             transform: translateX(-50%);
           }
+     
         }
-  
+
         .mb-3 {
           p {
             font-size: 1.4em;
             line-height: 1.5;
             margin: 0.5em 0;
-  
+
             strong {
               color: #007bff;
             }
@@ -123,11 +111,11 @@
       }
     }
   }
-  
+
   .tables-section {
-    flex: 1; // Ocupă restul spațiului disponibil
-    max-width: 70%; // Ajustează lățimea pentru a ocupa spațiul rămas
-  
+    flex: 1;
+    max-width: 70%;
+
     .mat-elevation-z8 {
       width: 100%;
       border-collapse: collapse;
@@ -135,12 +123,12 @@
       box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.2);
       border-radius: 10px;
       overflow: hidden;
-  
+
       .mat-header-cell, .mat-cell {
         padding: 1em;
         text-align: left;
       }
-  
+
       .mat-header-cell {
         background-color: #007bff;
         color: white;
@@ -148,20 +136,21 @@
         text-transform: uppercase;
         letter-spacing: 0.05em;
       }
-  
+
       .mat-cell {
         border-bottom: 1px solid #ddd;
       }
-  
+
       .mat-row:hover {
         background-color: #f9f9f9;
       }
-  
+
       h2 {
         margin-top: 1em;
         font-size: 1.5em;
       }
     }
+
     .title-section {
       display: flex;
       justify-content: space-between;
@@ -178,56 +167,61 @@
     }
   }
 
-hr {
-  border: 1px solid black;
-}
-  
-    .project-issues {
-      margin-top: 2em;
-  
- 
-    }
+  hr {
+    border: 1px solid black;
+  }
 
-  
+  .project-issues {
+    margin-top: 2em;
+  }
+
   @media (max-width: 768px) {
     .container {
       flex-direction: column;
-  
+
       .profile-card, .tables-section {
         max-width: 100%;
         margin: 0;
       }
     }
   }
+
   .my-paginator {
-    background-color: transparent; /* Remove background */
-    padding: 8px 0;                 /* Reduce padding */
-    border-radius: 0;               /* Remove border radius */
-    box-shadow: none;               /* Remove shadow */
-    
+    background-color: transparent;
+    padding: 8px 0;
+    border-radius: 0;
+    box-shadow: none;
+
     .mat-paginator-container {
-        justify-content: flex-end;  
+      justify-content: flex-end;
     }
 
     .mat-paginator-page-size-label,
     .mat-select {
-        font-size: 14px;             /* Smaller font for the label and dropdown */
-        color: #555;                /* Darker gray for text */
+      font-size: 14px;
+      color: #555;
     }
 
     .mat-select-arrow {
-        color: #555;                 /* Match arrow color to the text */
+      color: #555;
     }
-  
+
     .mat-form-field-appearance-outline .mat-form-field-wrapper {
-        padding-bottom: 0; 
+      padding-bottom: 0;
     }
 
     .mat-icon-button {
-        color: #555;                /* Match icon color to the text */
+      color: #555;
 
-        &:hover {
-            background-color: #eee;  /* Very subtle hover effect */
-        }
+      &:hover {
+        background-color: #eee;
+      }
     }
+  }
+
+}
+.dropdown button {
+  background-color: #007bff; /* Blue background */
+  color: white; /* White text */
+  border: none; /* Remove border */
 }

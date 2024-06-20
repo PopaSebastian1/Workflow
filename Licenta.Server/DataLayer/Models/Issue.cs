@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Licenta.Server.DataLayer.Enum;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,12 +8,12 @@ using JsonIgnoreAttribute = System.Text.Json.Serialization.JsonIgnoreAttribute;
 
 namespace Licenta.Server.DataLayer.Models
 {
-    public class Issue
-    {
-        public Guid Id { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public DateTime CreatedAt { get; set; }
+public class Issue
+  {
+    public Guid Id { get; set; }
+    public string Title { get; set; }
+    public string Description { get; set; }
+    public DateTime CreatedAt { get; set; }
         public DateTime DueDate { get; set; }
         public float EstimatedTime { get; set; }
         public float LoggedTime { get; set; }
@@ -38,6 +39,10 @@ namespace Licenta.Server.DataLayer.Models
 
         [ForeignKey("ParentIssue")]
         public Guid? ParentIssueId { get; set; }
+
+        [ForeignKey("LabelId")]
+        public int? LabelId { get; set; } // permite valori null pentru LabelId
+
         // Navigation properties
         [JsonIgnore]
         public List<Comment> Comments { get; set; }
@@ -48,13 +53,15 @@ namespace Licenta.Server.DataLayer.Models
         public IssueType IssueType { get; set; }
         public User Assignee { get; set; }
         public User Reporter { get; set; }
+        public IssueLabel Label { get; set; }
+        public PriorityLevel Priority { get; set; }
+
         // Proprietăți pentru relația de ierarhie
         [JsonIgnore]
         public Issue ParentIssue { get; set; }
-        // Lista de probleme copil
-        //[JsonIgnore]
-        public List<Issue> ChildIssues { get; set; }
 
-        // Cheia externă pentru relația de unu-la-multe cu problema părinte
+        // Lista de probleme copil
+        [JsonIgnore]
+        public List<Issue> ChildIssues { get; set; }
     }
 }

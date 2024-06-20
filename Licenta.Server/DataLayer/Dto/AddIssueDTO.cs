@@ -1,4 +1,6 @@
-﻿namespace Licenta.Server.DataLayer.Dto
+﻿using Licenta.Server.DataLayer.Enum;
+
+namespace Licenta.Server.DataLayer.Dto
 {
     public class AddIssueDTO
     {
@@ -16,6 +18,8 @@
         public string IssueStatus { get; set; }
         public string IssueType { get; set; }
         public Guid ParentIssueId { get; set; }
+        public int? LabelId { get; set; }
+        public PriorityLevel Priority { get; set; }
 
     }
 }
